@@ -4,6 +4,9 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <fcntl.h>
+#include <stdio.h>
+
+#include "serial.h"
 
 int
 serial_open (void)
@@ -47,7 +50,6 @@ serial_shift (char *buffer, int *length, int shift)
   memmove (buffer, &buffer[shift], *length);
 }
 
-#include <stdio.h>
 static void
 serial_packet (char pkt[3])
 {
