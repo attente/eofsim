@@ -23,6 +23,7 @@ int main(int argc, char **argv) {
         int wait(static_cast< int >(graphics_delta()));
         if (wait < delay) SDL_Delay(delay - wait);
 
+        physics_step(1, 0);
         graphics_render();
     }
 
