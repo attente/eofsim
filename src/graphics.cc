@@ -4,7 +4,7 @@
 
 #include <iostream>
 
-static scene sim;
+static scene *sim;
 
 int graphics_initialise() {
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER)) {
@@ -42,28 +42,31 @@ int graphics_initialise() {
     glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_BLEND);
     glTexEnvfv(GL_TEXTURE_ENV, GL_TEXTURE_ENV_COLOR, bright);
 
-    sim.start();
+    sim = new scene();
+    sim->start();
     return 0;
 }
 
 void graphics_destroy() {
+    delete sim;
+
     glDisable(GL_TEXTURE_2D);
     glDisable(GL_BLEND);
     SDL_Quit();
 }
 
 void graphics_render() {
-    sim.render();
+    sim->render();
 }
 
 void graphics_stop() {
-    sim.stop();
+    sim->stop();
 }
 
 bool graphics_loop() {
-    return sim.loop();
+    return sim->loop();
 }
 
 double graphics_delta() {
-    return sim.clock.delta();
+    return sim->clock.delta();
 }

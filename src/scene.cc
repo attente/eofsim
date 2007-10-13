@@ -102,29 +102,10 @@ void scene::stop() {
 void scene::render() const {
     camera view;
 
-    view.x.x = 0;
     physics_get_position(&view.x.z, &view.x.y);
     physics_get_velocity(&view.y.z, &view.y.y);
     view.x.z = -view.x.z;
     view.y.z = -view.y.z;
-    view.x.x = 0;
-    view.x.y = 50;
-    view.x.z = 600;
-    view.y.x = 0;
-    view.y.y = -50;
-    view.y.z = -600;
-    view.z.x = 0;
-    view.z.y = 600;
-    view.z.z = -50;
-    view.x.x = 0;
-    view.x.y = 50;
-    view.x.z = 0;
-    view.y.x = 0;
-    view.y.y = -50;
-    view.y.z = 0;
-    view.z.x = 0;
-    view.z.y = 0;
-    view.z.z = 1;
     view.position();
 
     glPushMatrix();
