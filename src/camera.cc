@@ -1,6 +1,9 @@
 #include "camera.hh"
 #include "sdl.hh"
 
+#include <iostream>
+using std::cerr;
+
 camera::camera() {
     const double angle(120),
                  ratio(4.0 / 3.0),
@@ -23,11 +26,12 @@ void camera::move(const vector &d) {
 }
 
 void camera::position() const {
-    glClear(GL_COLOR_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 
     gluLookAt(x.x            , x.y            , x.z            ,
               x.x + y.x      , x.y + y.y      , x.z + y.z      ,
                         + z.x,           + z.y,           + z.z);
+    cerr << "gluLookAt(" << x.x << ", " << x.y << ", " << x.z << ", " << x.x + y.x << ", " << x.y + y.y << ", " << x.z + y.z << ", " << z.x << ", " << z.y << ", " << z.z << ")\n";
 }

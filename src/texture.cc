@@ -1,5 +1,9 @@
 #include "texture.hh"
 
+#include <iostream>
+using std::cerr;
+using std::endl;
+
 static SDL_PixelFormat *format();
 static void select(int w1, int h1, int &w2, int &h2);
 

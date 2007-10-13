@@ -7,6 +7,8 @@ int main(int argc, char **argv) {
     if (error) return error;
     const int delay(40);
 
+    physics_initialise ();
+
     while (graphics_loop()) {
         SDL_Event event;
 

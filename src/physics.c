@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include <math.h>
 
 #include "physics.h"
@@ -8,8 +9,8 @@ static double dx, dy;
 void
 physics_initialise (void)
 {
-  x = 20000;
-  y = 2000;
+  x = -600;
+  y = 50;
   dx = 1;
   dy = 0;
 }
@@ -45,6 +46,13 @@ physics_add_speed (double amount)
   dy += sin (angle) * amount;
 }
 
+static void
+physics_scale_speed (double factor)
+{
+  dx *= factor;
+  dy *= factor;
+}
+
 double
 physics_get_speed (void)
 {
@@ -68,4 +76,7 @@ physics_step (int thrust, int flaps)
   y += dy;
 
   physics_add_speed (thrust);
+  physics_scale_speed (0.9);
+
+  printf ("position %f %f\t\t velocity %f %f\n", x, y, dx, dy);
 }
