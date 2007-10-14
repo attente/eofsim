@@ -1,5 +1,9 @@
-#ifndef PHYSICS_HH
-#define PHYSICS_HH
+#ifndef _physics_h_
+#define _physics_h_
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 void physics_initialise(double  x,
                         double  y,
@@ -18,4 +22,8 @@ void physics_set_flaps(int value);
 
 void physics_update(void);
 
+#ifdef __cplusplus
+}
 #endif
+
+#endif /* _physics_h_ */

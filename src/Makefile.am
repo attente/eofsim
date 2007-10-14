@@ -7,5 +7,5 @@ AM_CFLAGS = -Wall -Wwrite-strings -Wmissing-prototypes
 AM_CXXFLAGS = $(CFLAGS) $(sdl_CFLAGS)
 AM_LDFLAGS = -lm $(sdl_LIBS) -lGL -lGLU -lSDL_image
 
-eofsim_SOURCES = serial.c main.c serial.h
+eofsim_SOURCES = serial.c main.c serial.h $(graphics)
 owfsim_SOURCES = owfsim.cc $(graphics)

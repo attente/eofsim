@@ -1,4 +1,4 @@
-#include "graphics.hh"
+#include "graphics.h"
 #include "sdl.hh"
 #include "scene.hh"
 

@@ -1,7 +1,7 @@
 #include "scene.hh"
 #include "sdl.hh"
 #include "camera.hh"
-#include "physics.hh"
+#include "physics.h"
 
 #include <vector>
 

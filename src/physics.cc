@@ -1,4 +1,4 @@
-#include "physics.hh"
+#include "physics.h"
 #include "plane.hh"
 
 static plane *obj;

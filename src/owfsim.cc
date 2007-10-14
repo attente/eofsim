@@ -1,5 +1,5 @@
-#include "graphics.hh"
-#include "physics.hh"
+#include "graphics.h"
+#include "physics.h"
 #include "timer.hh"
 #include "sdl.hh"
 
