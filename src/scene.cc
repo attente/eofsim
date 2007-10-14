@@ -1,7 +1,7 @@
 #include "scene.hh"
 #include "sdl.hh"
 #include "camera.hh"
-#include "physics.h"
+#include "physics.hh"
 
 #include <vector>
 
@@ -91,21 +91,16 @@ bool scene::loop() const {
     return running;
 }
 
-void scene::start() {
-    clock.update();
-}
-
 void scene::stop() {
     running = false;
 }
 
 void scene::render() const {
     camera view;
-
-    physics_get_position(&view.x.z, &view.x.y);
-    physics_get_velocity(&view.y.z, &view.y.y);
-    view.x.z = -view.x.z;
-    view.y.z = -view.y.z;
+    physics_get_location(&view.x.z, &view.x.y);
+    physics_get_direction(&view.y.z, &view.y.y);
+    view.z.y = -view.y.z;
+    view.z.z = view.y.y;
     view.position();
 
     glPushMatrix();

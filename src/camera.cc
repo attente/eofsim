@@ -1,9 +1,6 @@
 #include "camera.hh"
 #include "sdl.hh"
 
-#include <iostream>
-using std::cerr;
-
 camera::camera() {
     const double angle(120),
                  ratio(4.0 / 3.0),
@@ -33,5 +30,4 @@ void camera::position() const {
     gluLookAt(x.x            , x.y            , x.z            ,
               x.x + y.x      , x.y + y.y      , x.z + y.z      ,
                         + z.x,           + z.y,           + z.z);
-    cerr << "gluLookAt(" << x.x << ", " << x.y << ", " << x.z << ", " << x.x + y.x << ", " << x.y + y.y << ", " << x.z + y.z << ", " << z.x << ", " << z.y << ", " << z.z << ")\n";
 }

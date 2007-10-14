@@ -1,5 +1,6 @@
 #include "graphics.hh"
-#include "physics.h"
+#include "physics.hh"
+#include "timer.hh"
 #include "sdl.hh"
 
 int main(int argc, char **argv) {
@@ -7,9 +8,9 @@ int main(int argc, char **argv) {
     if (error) return error;
     const int delay(40);
 
-    physics_initialise ();
+    physics_initialise (1000, 100, -200, 0, 1);
 
-    while (graphics_loop()) {
+    for (timer clock; graphics_loop(); clock.update()) {
         SDL_Event event;
 
         while (SDL_PollEvent(&event)) {
@@ -20,10 +21,10 @@ int main(int argc, char **argv) {
             }
         }
 
-        int wait(static_cast< int >(graphics_delta()));
+        int wait(static_cast< int >(clock.delta()));
         if (wait < delay) SDL_Delay(delay - wait);
 
-        physics_step(1, 0);
+        physics_update();
         graphics_render();
     }
 

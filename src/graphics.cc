@@ -43,7 +43,6 @@ int graphics_initialise() {
     glTexEnvfv(GL_TEXTURE_ENV, GL_TEXTURE_ENV_COLOR, bright);
 
     sim = new scene();
-    sim->start();
     return 0;
 }
 
@@ -65,8 +64,4 @@ void graphics_stop() {
 
 bool graphics_loop() {
     return sim->loop();
-}
-
-double graphics_delta() {
-    return sim->clock.delta();
 }
