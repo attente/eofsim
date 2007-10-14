@@ -2,78 +2,84 @@
 
 #include <cmath>
 
-const double friction(0.90);
-const double airbrake(0.20);
-const double gravity(-9.8);
+const double drag(0.90);
+const double brake(0.15);
 const double height(2.00);
-const double match(0.15);
-const double tilt(25);
+const double gravity(-9.81);
 
-const int limit(8);
+const double epsilon(1E-6);
+const double acceleration(25);
 
-plane::plane(double dst, double alt, double dx, double dy, double acc) :
-x(0, alt, dst), y(0, dy, dx), z(y * acc / y.length()), thrust(0), flaps(0) {
+const double bias(0);
+const double tilt(1);
+
+plane::plane(double dst, double alt, double dx, double dy) :
+pos(0, alt, dst), vel(0, dy, dx), impact(2), thrust(0), flaps(0) {
 }
 
 const vector &plane::position() const {
-    return x;
+    return pos;
 }
 
 const vector &plane::velocity() const {
-    return y;
+    return vel;
 }
 
-const vector &plane::direction() const {
-    return z;
+vector plane::direction() const {
+    return vel ? vel : vector(0, 0, -1);
+}
+
+int plane::engine() const {
+    return thrust;
 }
 
 void plane::engine(int power) {
     thrust = power;
-    if (thrust > limit)
-        thrust = limit;
-    else if (thrust < -limit)
-        thrust = -limit;
+    if (thrust > 8)
+        thrust = 8;
+    else if (thrust < -8)
+        thrust = -8;
+}
+
+int plane::wings() const {
+    return flaps;
 }
 
 void plane::wings(int angle) {
     flaps = angle;
-    if (flaps > limit)
-        flaps = limit;
-    else if (flaps < -limit)
-        flaps = -limit;
+    if (flaps > 8)
+        flaps = 8;
+    else if (flaps < -8)
+        flaps = -8;
 }
 
 void plane::start() {
-    impact = 2;
-
     clock.update();
 }
 
 void plane::update() {
     double time(clock.delta() / 1000);
 
-    x += y * time;
-    y.y += gravity * time;
-    if (thrust > 0) y += z * (thrust * time / limit);
-    z = vector(1, 0, 0).rotate(z, flaps * tilt * time / limit);
+    vel.y += gravity * time;
+    if (thrust >= 0) vel *= std::pow(drag, time);
+    else vel *= std::pow(drag + brake * thrust / 8, time);
 
-    vector a(y * (1 / y.length())), b(z * (1 / z.length()));
-    vector c(a * match), d(b * match);
-    a += d; b += c;
-
-    y = a * (y.length() / a.length());
-    z = b * (z.length() / b.length());
-
-    if (thrust >= 0) y *= std::pow(friction, time);
-    else y *= std::pow(friction + airbrake * thrust / limit, time);
-
-    if (x.y < height) {
-        if (impact > 1)
-            impact = y.y;
-
-        x.y = height;
-        y.y = 0;
+    if (thrust > 0) {
+        double a(acceleration * thrust / 8);
+        if (vel.length() < epsilon) vel.z -= a * time;
+        else vel += vel * (a * time / vel.length());
     }
 
+    double a((tilt * flaps / 8 + bias) * time);
+    vel = vector(1, 0, 0).rotate(vel, a * vel.length());
+
+    pos += vel * time;
     clock.update();
+
+    if (pos.y < height) {
+        if (impact > 1) impact = vel.y;
+
+        pos.y = height;
+        vel.y = 0;
+    }
 }

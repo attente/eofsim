@@ -6,13 +6,16 @@
 
 class plane {
 public:
-    plane(double dst, double alt, double dx, double dy, double acc);
+    plane(double dst, double alt, double dx, double dy);
 
     const vector &position() const;
     const vector &velocity() const;
-    const vector &direction() const;
+    vector direction() const;
 
+    int engine() const;
     void engine(int power);
+
+    int wings() const;
     void wings(int angle);
 
     void start();
@@ -21,11 +24,10 @@ public:
     timer clock;
 
 private:
+    vector pos, vel;
+    double impact;
     int thrust;
     int flaps;
-
-    vector x, y, z;
-    double impact;
 };
 
 #endif

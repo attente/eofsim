@@ -6,9 +6,8 @@ static plane *obj;
 void physics_initialise(double  x,
                         double  y,
                         double dx,
-                        double dy,
-                        double  a) {
-    obj = new plane(x, y, dx, dy, a);
+                        double dy) {
+    obj = new plane(x, y, dx, dy);
     obj->start();
 }
 
@@ -24,6 +23,14 @@ void physics_get_location(double *x, double *y) {
 void physics_get_direction(double *x, double *y) {
     *x = obj->direction().z;
     *y = obj->direction().y;
+}
+
+int physics_get_thrust() {
+    return obj->engine();
+}
+
+int physics_get_flaps() {
+    return obj->wings();
 }
 
 void physics_set_thrust(int value) {
