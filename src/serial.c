@@ -6,6 +6,7 @@
 #include <fcntl.h>
 #include <stdio.h>
 
+#include "physics.h"
 #include "serial.h"
 
 int
@@ -53,7 +54,10 @@ serial_shift (char *buffer, int *length, int shift)
 static void
 serial_packet (char pkt[3])
 {
-  printf ("got %c %c %c\n", pkt[0], pkt[1], pkt[2]);
+  printf ("%d\t%d\t%d\n", pkt[0]-'m', pkt[1]-'m', pkt[2]-'m');
+  physics_set_thrust (pkt[0] - 'm');
+  physics_set_flaps (pkt[1] - 'm');
+  physics_update ();
 }
 
 bool

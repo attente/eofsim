@@ -62,19 +62,19 @@ initialise (void)
   avr_control.ucsr0b = _BV (TXEN0);
 
   clr_ddr (B, 0);
-  set_port (B, 0);
+  clr_port (B, 0);
   clr_ddr (B, 1);
-  set_port (B, 1);
+  clr_port (B, 1);
   clr_ddr (B, 2);
-  set_port (B, 2);
+  clr_port (B, 2);
   clr_ddr (B, 3);
-  set_port (B, 3);
+  clr_port (B, 3);
   clr_ddr (B, 4);
-  set_port (B, 4);
+  clr_port (B, 4);
   clr_ddr (B, 5);
-  set_port (B, 5);
+  clr_port (B, 5);
   clr_ddr (D, 7);
-  set_port (D, 7);
+  clr_port (D, 7);
 /*
   set_bit (avr_control.tccr1b, CS11);
   set_bit (avr_control.tccr1b, CS10);
