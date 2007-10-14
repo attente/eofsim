@@ -97,10 +97,12 @@ void scene::stop() {
 
 void scene::render() const {
     camera view;
+
     physics_get_location(&view.x.z, &view.x.y);
     physics_get_direction(&view.y.z, &view.y.y);
     view.z.y = -view.y.z;
     view.z.z = view.y.y;
+
     view.position();
 
     glPushMatrix();
@@ -109,6 +111,29 @@ void scene::render() const {
     glPopMatrix();
 
     glCallList(list + 1);
+
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    gluOrtho2D(0, 80, -10, 10);
+
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+
+    glColor4d(1, 0, 0, 0.5);
+    glBegin(GL_TRIANGLE_STRIP);
+    glVertex2d(4, 0);
+    glVertex2d(6, 0);
+    glVertex2d(4, physics_get_thrust());
+    glVertex2d(6, physics_get_thrust());
+    glEnd();
+
+    glColor4d(0, 0, 1, 0.5);
+    glBegin(GL_TRIANGLE_STRIP);
+    glVertex2d(74, 0);
+    glVertex2d(76, 0);
+    glVertex2d(74, physics_get_flaps());
+    glVertex2d(76, physics_get_flaps());
+    glEnd();
 
     SDL_GL_SwapBuffers();
 }

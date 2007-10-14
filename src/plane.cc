@@ -2,6 +2,9 @@
 
 #include <cmath>
 
+#include <iostream>
+using std::cerr;
+
 const double drag(0.90);
 const double brake(0.15);
 const double height(2.00);
@@ -75,6 +78,8 @@ void plane::update() {
 
     pos += vel * time;
     clock.update();
+
+    cerr << vel.length() << '\n';
 
     if (pos.y < height) {
         if (impact > 1) impact = vel.y;
