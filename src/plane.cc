@@ -11,7 +11,7 @@ const double epsilon(1E-6);
 const double acceleration(25);
 
 const double bias(0);
-const double tilt(1);
+const double tilt(1E-2);
 
 plane::plane(double dst, double alt, double dx, double dy) :
 pos(0, alt, dst), vel(0, dy, dx), impact(2), thrust(0), flaps(0) {

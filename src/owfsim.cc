@@ -9,7 +9,7 @@ int main(int argc, char **argv) {
     const int delay(40);
 
     physics_initialise (1000, 100, -200, 0);
-    physics_set_thrust(8);
+    physics_set_thrust(-8);
     physics_set_flaps(0);
 
     for (timer clock; graphics_loop(); clock.update()) {
