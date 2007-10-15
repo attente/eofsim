@@ -7,6 +7,7 @@
 class scene {
 public:
     scene();
+    ~scene();
 
     void stop();
     bool loop() const;

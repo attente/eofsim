@@ -11,9 +11,9 @@ const double height(2.00);
 const double gravity(-9.81);
 
 const double epsilon(1E-6);
-const double acceleration(25);
+const double acceleration(30);
 
-const double bias(0);
+const double bias(1E-3);
 const double tilt(1E-2);
 
 plane::plane(double dst, double alt, double dx, double dy) :

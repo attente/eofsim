@@ -69,6 +69,7 @@ scene::scene() : running(true), ground("../data/ground.png"),
         glEnd();
     }
 
+    glBindTexture(GL_TEXTURE_2D, 0);
     glEndList();
 
     glNewList(list + 1, GL_COMPILE);
@@ -84,7 +85,12 @@ scene::scene() : running(true), ground("../data/ground.png"),
     glTexCoord2d(1, 1);
     glVertex3d( 12.5, 0,  500);
     glEnd();
+    glBindTexture(GL_TEXTURE_2D, 0);
     glEndList();
+}
+
+scene::~scene() {
+    glDeleteLists(list, 2);
 }
 
 bool scene::loop() const {
@@ -111,31 +117,6 @@ void scene::render() const {
     glPopMatrix();
 
     glCallList(list + 1);
-
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    gluOrtho2D(0, 80, -10, 10);
-
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
-
-    glColor4d(1, 0, 0, 0.5);
-    glBegin(GL_TRIANGLE_STRIP);
-    glVertex2d(4, 0);
-    glVertex2d(6, 0);
-    glVertex2d(4, physics_get_thrust());
-    glVertex2d(6, physics_get_thrust());
-    glEnd();
-
-    glColor4d(0, 0, 1, 0.5);
-    glBegin(GL_TRIANGLE_STRIP);
-    glVertex2d(74, 0);
-    glVertex2d(76, 0);
-    glVertex2d(74, physics_get_flaps());
-    glVertex2d(76, physics_get_flaps());
-    glEnd();
-
-    SDL_GL_SwapBuffers();
 }
 
 static double f(int i, int j) {
