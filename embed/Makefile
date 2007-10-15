@@ -1,10 +1,15 @@
+LD = avr-ld
 CC = avr-gcc
 LDFLAGS = -mmcu=atmega168
-CFLAGS = -mmcu=atmega168 -Wall -std=gnu99 -Os
+CFLAGS = -mmcu=atmega168 -Wall -std=gnu99 -Os -Wmissing-prototypes
 
-all: embed.install
+all: embed.hex
+install: embed.install
 
-%.elf: %.o runtime.o
+embed.o: serial.o softserial.o pwmdecode.o main.o timer.o
+	$(LD) -r -o $@ $^
+
+%.elf: %.o
 	$(CC) $(LDFLAGS) -o $@ $^
 
 %.hex: %.elf

@@ -1,3 +1,4 @@
+#include <avr/interrupt.h>
 #include "avr-gtypes.h"
 
 enum
