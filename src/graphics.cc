@@ -7,7 +7,7 @@
 static scene *sim;
 
 int graphics_initialise() {
-    if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER)) {
+    if (SDL_Init(SDL_INIT_VIDEO)) {
         std::cerr << "SDL subsystems could not be initialized.\n";
         return 1;
     }

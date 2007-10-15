@@ -6,13 +6,13 @@ one_iteration (void)
   static signed char count[3];
   static char iter;
 
-  if (((++iter) & 7) == 0)
+  if (((++iter) & 31) == 0)
   {
     int i;
     
     for (i = 0; i < 3; i++)
     {
-      send_byte (count[i] + 'm');
+      send_byte ((count[i]/4) + 'm');
       count[i] = 0;
     }
 

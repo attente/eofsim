@@ -1,6 +1,8 @@
 #include "timer.hh"
 
-timer::timer() : speed(1), tm(0), dt(0), ms(SDL_GetTicks()) {
+timer::timer() : speed(1), tm(0), dt(0) {
+    SDL_Init(SDL_INIT_TIMER);
+    ms = SDL_GetTicks();
 }
 
 void timer::update() {
