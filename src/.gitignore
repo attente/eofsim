@@ -2,3 +2,6 @@
 Makefile.in
 Makefile
 .deps
+eofsim
+owfsim
+netwatch

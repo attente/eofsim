@@ -1,3 +1,9 @@
+/*
+ * Copyright © 2007 Ryan Lortie
+ *
+ * All rights reserved.
+ */
+
 #ifndef _avr_gtypes_h_
 #define _avr_gtypes_h_
 

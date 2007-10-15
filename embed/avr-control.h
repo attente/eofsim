@@ -1,3 +1,12 @@
+/*
+ * Copyright © 2007 Ryan Lortie
+ *
+ * All rights reserved.
+ */
+
+#ifndef _avr_control_h_
+#define _avr_control_h_
+
 #include <avr/interrupt.h>
 #include "avr-gtypes.h"
 
@@ -216,3 +225,5 @@ typedef struct
 #define clr_port(bank, nr) clr_bit (port(bank).port, portnum (bank, nr))
 
 #define get_pin(bank, nr) get_bit (port(bank).pin, portnum (bank, nr))
+
+#endif /* _avr_control_h_ */

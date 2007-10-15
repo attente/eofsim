@@ -1,3 +1,9 @@
+/*
+ * Copyright © 2007 Ryan Lortie
+ *
+ * All rights reserved.
+ */
+
 #include "avr-control.h"
 #include "softserial.h"
 #include "pwmdecode.h"
