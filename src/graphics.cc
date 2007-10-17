@@ -1,12 +1,14 @@
 #include "graphics.h"
 #include "physics.h"
 #include "sdl.hh"
+#include "font.hh"
 #include "scene.hh"
 #include "texture.hh"
 
 #include <iostream>
 
 static GLuint list;
+static font *glyph;
 static scene *sim;
 
 int graphics_initialise() {
@@ -16,6 +18,7 @@ int graphics_initialise() {
     }
 
     SDL_WM_SetCaption("flight", "flight");
+    const int flags(SDL_OPENGL | SDL_FULLSCREEN);
     const int width(800), height(600);
 
     if (SDL_GL_SetAttribute(SDL_GL_RED_SIZE,          8) ||
@@ -30,7 +33,7 @@ int graphics_initialise() {
         SDL_GL_SetAttribute(SDL_GL_ACCUM_GREEN_SIZE,  0) ||
         SDL_GL_SetAttribute(SDL_GL_ACCUM_BLUE_SIZE,   0) ||
         SDL_GL_SetAttribute(SDL_GL_ACCUM_ALPHA_SIZE,  0) ||
-        SDL_SetVideoMode(width, height, 0, SDL_OPENGL) == NULL) {
+        SDL_SetVideoMode(width, height, 0, flags) == NULL) {
             std::cerr << "Appropriate OpenGL attributes could not be set.\n";
             SDL_Quit();
             return 2;
@@ -45,6 +48,7 @@ int graphics_initialise() {
     glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_BLEND);
     glTexEnvfv(GL_TEXTURE_ENV, GL_TEXTURE_ENV_COLOR, bright);
 
+    glyph = new font("../data/font.fnt");
     sim = new scene();
     list = glGenLists(1);
 
@@ -122,6 +126,7 @@ int graphics_initialise() {
 }
 
 void graphics_destroy() {
+    delete glyph;
     delete sim;
 
     glDeleteLists(list, 1);
@@ -158,6 +163,8 @@ void graphics_render() {
     glVertex2d(780, y + 5);
     glEnd();
 
+    graphics_print("hello world!", 400, 300, 4, 0.5, 0.5);
+
     SDL_GL_SwapBuffers();
 }
 
@@ -169,5 +176,7 @@ bool graphics_loop() {
     return sim->loop();
 }
 
-void graphics_print(const char *s, double x, double y) {
+void graphics_print(const char *s, double x, double y,
+                         double c, double h, double v) {
+    glyph->print(s, x, y, c, h, v);
 }

@@ -10,7 +10,7 @@ static double f(int i, int j);
 
 scene::scene() : running(true), ground("../data/ground.png"),
                  runway("../data/runway.png"), list(glGenLists(2)) {
-    const double limit(1E4);
+    const double limit(4E4);
 
     glNewList(list, GL_COMPILE);
     glBindTexture(GL_TEXTURE_2D, ground);

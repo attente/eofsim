@@ -33,7 +33,9 @@ main (void)
     poll(NULL, 0, 10);
     physics_update ();
 
-    if (SDL_PollEvent(&event) && event.type == SDL_QUIT)
+    if (SDL_PollEvent(&event) &&
+        (event.type == SDL_QUIT || event.type == SDL_KEYDOWN &&
+                         event.key.keysym.sym == SDLK_ESCAPE))
       return 0;
 
     graphics_render ();

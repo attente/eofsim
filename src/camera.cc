@@ -4,7 +4,7 @@
 camera::camera() {
     const double angle(120),
                  ratio(4.0 / 3.0),
-                 near(1E-3), far(1E6);
+                 near(1E-3), far(1E9);
 
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();

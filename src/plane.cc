@@ -2,9 +2,6 @@
 
 #include <cmath>
 
-#include <iostream>
-using std::cerr;
-
 const double drag(0.90);
 const double brake(0.15);
 const double height(2.00);
@@ -13,8 +10,8 @@ const double gravity(-9.81);
 const double epsilon(1E-6);
 const double acceleration(30);
 
-const double bias(1E-3);
-const double tilt(1E-2);
+const double bias(0);
+const double tilt(4E-3);
 
 plane::plane(double dst, double alt, double dx, double dy) :
 pos(0, alt, dst), vel(0, dy, dx), impact(2), thrust(0), flaps(0) {
@@ -78,8 +75,6 @@ void plane::update() {
 
     pos += vel * time;
     clock.update();
-
-    cerr << vel.length() << '\n';
 
     if (pos.y < height) {
         if (impact > 1) impact = vel.y;
