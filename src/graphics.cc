@@ -18,6 +18,7 @@ int graphics_initialise() {
     }
 
     SDL_WM_SetCaption("flight", "flight");
+    const int flags(SDL_OPENGL | SDL_FULLSCREEN);
     const int width(800), height(600);
 
     if (SDL_GL_SetAttribute(SDL_GL_RED_SIZE,          8) ||
@@ -32,7 +33,7 @@ int graphics_initialise() {
         SDL_GL_SetAttribute(SDL_GL_ACCUM_GREEN_SIZE,  0) ||
         SDL_GL_SetAttribute(SDL_GL_ACCUM_BLUE_SIZE,   0) ||
         SDL_GL_SetAttribute(SDL_GL_ACCUM_ALPHA_SIZE,  0) ||
-        SDL_SetVideoMode(width, height, 0, SDL_OPENGL) == NULL) {
+        SDL_SetVideoMode(width, height, 0, flags) == NULL) {
             std::cerr << "Appropriate OpenGL attributes could not be set.\n";
             SDL_Quit();
             return 2;
@@ -161,6 +162,8 @@ void graphics_render() {
     glVertex2d(770, y);
     glVertex2d(780, y + 5);
     glEnd();
+
+    graphics_print("hello world!", 400, 300, 4, 0.5, 0.5);
 
     SDL_GL_SwapBuffers();
 }

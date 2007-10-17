@@ -8,7 +8,7 @@ int main(int argc, char **argv) {
     if (error) return error;
     const int delay(40);
 
-    physics_initialise (10000, 1000, -238, 0);
+    physics_initialise (10000, 1500, -238, 0);
     physics_set_thrust(0);
     physics_set_flaps(0);
 
@@ -20,19 +20,24 @@ int main(int argc, char **argv) {
 
         while (SDL_PollEvent(&event)) {
             switch (event.type) {
-                case SDL_KEYDOWN:
-                    switch (event.key.keysym.sym) {
-                        case SDLK_UP:
-                            physics_set_flaps(physics_get_flaps() - 1);
+                case SDL_MOUSEBUTTONDOWN:
+                    switch (event.button.button) {
+                        case SDL_BUTTON_LEFT:
+                            physics_set_thrust(physics_get_thrust() + 1);
                             break;
-                        case SDLK_DOWN:
-                            physics_set_flaps(physics_get_flaps() + 1);
-                            break;
-                        case SDLK_LEFT:
+                        case SDL_BUTTON_RIGHT:
                             physics_set_thrust(physics_get_thrust() - 1);
                             break;
-                        case SDLK_RIGHT:
-                            physics_set_thrust(physics_get_thrust() + 1);
+                    }
+
+                    break;
+                case SDL_MOUSEMOTION:
+                    physics_set_flaps(event.motion.y * 17 / 600 - 8);
+                    break;
+                case SDL_KEYDOWN:
+                    switch (event.key.keysym.sym) {
+                        case SDLK_ESCAPE:
+                            graphics_stop();
                             break;
                         default:
                             break;
