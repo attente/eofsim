@@ -17,9 +17,15 @@ int graphics_initialise() {
         return 1;
     }
 
+    int width(800), height(600);
     SDL_WM_SetCaption("flight", "flight");
     const int flags(SDL_OPENGL | SDL_FULLSCREEN);
-    const int width(800), height(600);
+    SDL_Rect **modes(SDL_ListModes(NULL, flags));
+
+    if (modes != NULL && modes != reinterpret_cast< SDL_Rect ** >(-1)) {
+        width = modes[0]->w;
+        height = modes[0]->h;
+    }
 
     if (SDL_GL_SetAttribute(SDL_GL_RED_SIZE,          8) ||
         SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE,        8) ||
