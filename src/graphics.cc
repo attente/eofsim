@@ -1,12 +1,14 @@
 #include "graphics.h"
 #include "physics.h"
 #include "sdl.hh"
+#include "font.hh"
 #include "scene.hh"
 #include "texture.hh"
 
 #include <iostream>
 
 static GLuint list;
+static font *glyph;
 static scene *sim;
 
 int graphics_initialise() {
@@ -45,6 +47,7 @@ int graphics_initialise() {
     glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_BLEND);
     glTexEnvfv(GL_TEXTURE_ENV, GL_TEXTURE_ENV_COLOR, bright);
 
+    glyph = new font("../data/font.fnt");
     sim = new scene();
     list = glGenLists(1);
 
@@ -122,6 +125,7 @@ int graphics_initialise() {
 }
 
 void graphics_destroy() {
+    delete glyph;
     delete sim;
 
     glDeleteLists(list, 1);
@@ -169,5 +173,7 @@ bool graphics_loop() {
     return sim->loop();
 }
 
-void graphics_print(const char *s, double x, double y) {
+void graphics_print(const char *s, double x, double y,
+                         double c, double h, double v) {
+    glyph->print(s, x, y, c, h, v);
 }

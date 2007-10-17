@@ -12,10 +12,8 @@ int main(int argc, char **argv) {
     physics_set_thrust(0);
     physics_set_flaps(0);
 
-    /*
     SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY,
                         SDL_DEFAULT_REPEAT_INTERVAL);
-    */
 
     for (timer clock; graphics_loop(); clock.update()) {
         SDL_Event event;

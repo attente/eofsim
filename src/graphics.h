@@ -13,7 +13,8 @@ void graphics_stop(void);
 bool graphics_loop(void);
 double graphics_delta(void);
 
-void graphics_print(const char *s, double x, double y);
+void graphics_print(const char *s, double x, double y,
+                         double c, double h, double v);
 
 #ifdef __cplusplus
 }
