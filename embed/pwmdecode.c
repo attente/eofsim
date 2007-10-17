@@ -16,10 +16,10 @@ pwmdecode_emit (guint8 values[3])
 {
   static guint8 last_values[3];
 
-  if (!memcmp (values, last_values, sizeof values))
+  if (!memcmp (values, last_values, sizeof last_values))
     return;
 
-  memcpy (last_values, values, sizeof values);
+  memcpy (last_values, values, sizeof last_values);
 
   serial_send (values[0]);
   serial_send (values[1]);

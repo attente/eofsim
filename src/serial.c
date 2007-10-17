@@ -89,30 +89,39 @@ serial_read (int fd)
   return true;
 }
 
+static unsigned char
+serial_conversion (double x)
+{
+  int index;
+
+  if (x < 0)
+    return 240;
+
+  index = (x * 10.0) + 0.5;
+
+  if (index > 1500)
+    return 40;
+
+  return analog_to_digital[index];
+}
+
 void
-serial_write (int fd,
-              int a,
-              int b,
-              int c)
+serial_write (int    fd,
+              double a,
+              double b,
+              double c)
 {
   unsigned char byte;
-
-  if (a < 0) a = 0;
-  if (b < 0) b = 0;
-  if (c < 0) c = 0;
-  if (b > 1023) b = 1023;
-  if (b > 1023) b = 1023;
-  if (c > 1023) c = 1023;
 
   byte = '*';
   write (fd, &byte, sizeof byte);
 
-  byte = analog_to_digital[a];
+  byte = serial_conversion (a);
   write (fd, &byte, sizeof byte);
 
-  byte = analog_to_digital[b];
+  byte = serial_conversion (b);
   write (fd, &byte, sizeof byte);
 
-  byte = analog_to_digital[c];
+  byte = serial_conversion (c);
   write (fd, &byte, sizeof byte);
 }

@@ -13,7 +13,7 @@ main (void)
   int net;
   int fd;
 
-  physics_initialise (1000, 100, -200, 0);
+  physics_initialise (50000, 100, -200, 0);
   physics_set_thrust (0);
   physics_set_flaps (0);
 
@@ -43,7 +43,7 @@ main (void)
       double x, y;
       physics_get_location (&x, &y);
 
-      serial_write (fd, x, y, 0);
+      serial_write (fd, y / 10.0, x / 100.0, 0);
     }
   }
 
