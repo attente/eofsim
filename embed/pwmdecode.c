@@ -4,28 +4,60 @@
  * All rights reserved.
  */
 
+#include <string.h>
+
 #include "avr-control.h"
 
 #include "pwmdecode.h"
+#include "serial.h"
 
-#if 0
-void
-pwmdecode (void)
+static void
+pwmdecode_emit (guint8 values[3])
 {
-  static signed char count[3];
-  static char iter;
+  static guint8 last_values[3];
 
-  if (((++iter) & 31) == 0)
+  if (!memcmp (values, last_values, sizeof values))
+    return;
+
+  memcpy (last_values, values, sizeof values);
+
+  serial_send (values[0]);
+  serial_send (values[1]);
+  serial_send (values[2]);
+  serial_send ('\n');
+}
+
+void
+pwmdecode_iteration (void)
+{
+  static guint8 iterations;
+  static int count[3];
+  guint8 values[3];
+
+  if ((++iterations) == 0)
   {
     int i;
-    
+   
     for (i = 0; i < 3; i++)
     {
-      serial_send ((count[i]/4) + 'm');
+      int sign;
+
+      sign = count[i] < 0;
+
+      if (sign)
+        count[i] = -count[i];
+
+      count[i] += 16;
+      count[i] /= 32;
+
+      if (sign)
+        count[i] = -count[i];
+
+      values[i] = count[i] + 'm';
       count[i] = 0;
     }
 
-    serial_send ('\n');
+    pwmdecode_emit (values);
   }
 
   if (get_pin (B, 0))
@@ -70,8 +102,6 @@ pwmdecode (void)
     count[2]--;
   }
 }
-#endif
-
 void
 pwmdecode_initialise (void)
 {

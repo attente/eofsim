@@ -6,6 +6,7 @@
 #include <fcntl.h>
 #include <stdio.h>
 
+#include "conversion.h"
 #include "physics.h"
 #include "serial.h"
 
@@ -33,6 +34,8 @@ serial_open (void)
   term.c_oflag = 0;
   term.c_lflag = 0;
   term.c_cflag = CLOCAL | CS8 | CREAD;
+  term.c_cc[VMIN] = 0;
+  term.c_cc[VTIME] = 0;
   cfsetospeed (&term, B9600);
 
   if (tcsetattr (fd, 0, &term))
@@ -84,4 +87,32 @@ serial_read (int fd)
       serial_shift (buffer, &length, 1);
 
   return true;
+}
+
+void
+serial_write (int fd,
+              int a,
+              int b,
+              int c)
+{
+  unsigned char byte;
+
+  if (a < 0) a = 0;
+  if (b < 0) b = 0;
+  if (c < 0) c = 0;
+  if (b > 1023) b = 1023;
+  if (b > 1023) b = 1023;
+  if (c > 1023) c = 1023;
+
+  byte = '*';
+  write (fd, &byte, sizeof byte);
+
+  byte = analog_to_digital[a];
+  write (fd, &byte, sizeof byte);
+
+  byte = analog_to_digital[b];
+  write (fd, &byte, sizeof byte);
+
+  byte = analog_to_digital[c];
+  write (fd, &byte, sizeof byte);
 }

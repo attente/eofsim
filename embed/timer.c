@@ -28,7 +28,7 @@ timer_wait (void)
 void
 timer_initialise (void)
 {
-  avr_control.tccr0b = _BV(CS01) | _BV(CS00);
+  avr_control.tccr0b = _BV(CS01);// | _BV(CS00);
   set_bit (avr_control.timsk0, TOIE0);
   sei ();
 }

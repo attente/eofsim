@@ -14,7 +14,7 @@ main (void)
   int fd;
 
   physics_initialise (1000, 100, -200, 0);
-  physics_set_thrust (8);
+  physics_set_thrust (0);
   physics_set_flaps (0);
 
   graphics_initialise ();
@@ -22,17 +22,29 @@ main (void)
   fd = serial_open ();
   net = net_open ();
 
-  net_addr_set (&remote, "127.0.0.1");
+  net_addr_set (&remote, "172.20.0.249");
 
-  while (serial_read (fd))
+  while (1)
   {
     SDL_Event event;
+
+    serial_read (fd);
+
+    poll(NULL, 0, 10);
+    physics_update ();
 
     if (SDL_PollEvent(&event) && event.type == SDL_QUIT)
       return 0;
 
     graphics_render ();
     netsend_packet (net, &remote);
+
+    {
+      double x, y;
+      physics_get_location (&x, &y);
+
+      serial_write (fd, x, y, 0);
+    }
   }
 
   return 0;

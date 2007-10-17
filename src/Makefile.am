@@ -8,6 +8,6 @@ AM_CFLAGS = -Wall -Wwrite-strings -Wmissing-prototypes $(sdl_CFLAGS)
 AM_CXXFLAGS = -Wall -Wwrite-strings $(sdl_CFLAGS)
 AM_LDFLAGS = -lm $(sdl_LIBS) -lGL -lGLU -lSDL_image
 
-eofsim_SOURCES = serial.c main.c serial.h $(graphics) $(physics) $(core) netsend.c net.c
+eofsim_SOURCES = serial.c main.c serial.h $(graphics) $(physics) $(core) netsend.c net.c conversion.c
 owfsim_SOURCES = owfsim.cc $(graphics) $(physics) $(core)
 netwatch_SOURCES = $(graphics) netphysics.c netmain.c $(core) net.c
