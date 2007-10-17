@@ -4,7 +4,7 @@
 
 const double drag(0.90);
 const double brake(0.15);
-const double height(2.00);
+const double height(0.00);
 const double gravity(-9.81);
 
 const double epsilon(1E-6);

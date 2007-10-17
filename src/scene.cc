@@ -102,12 +102,16 @@ void scene::stop() {
 }
 
 void scene::render() const {
+    const double h(2.00);
     camera view;
 
     physics_get_location(&view.x.z, &view.x.y);
     physics_get_direction(&view.y.z, &view.y.y);
     view.z.y = -view.y.z;
     view.z.z = view.y.y;
+
+    if (view.x.z < h)
+        view.x.z = h;
 
     view.position();
 
