@@ -19,5 +19,9 @@ main (void)
   timer_initialise ();
 
   while (true)
+  {
+    pwmdecode_iteration ();
+    timer_wait ();
     softserial_update ();
+  }
 }

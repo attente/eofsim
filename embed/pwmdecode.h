@@ -7,6 +7,7 @@
 #ifndef _pwmdecode_h_
 #define _pwmdecode_h_
 
+void       pwmdecode_iteration    (void);
 void       pwmdecode_initialise   (void);
 
 #endif /* _pwmdecode_h_ */
