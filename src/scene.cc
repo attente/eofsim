@@ -9,8 +9,9 @@ const int size(100), height(1000);
 static double f(int i, int j);
 
 scene::scene() : running(true), ground("../data/ground.png"),
-                 runway("../data/runway.png"), list(glGenLists(2)),
-                 tower("../data/tower.raw"), obj("../data/biplane.raw") {
+                 runway("../data/runway.png"), shadow("../data/shadow.png"),
+                 list(glGenLists(2)), tower("../data/tower.raw"),
+                 obj("../data/biplane.raw") {
     const double limit(4E4);
 
     glNewList(list, GL_COMPILE);

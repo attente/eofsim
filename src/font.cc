@@ -23,6 +23,7 @@ font::font(const char *file) {
 
 void font::print(const char *s, double x, double y,
                       double c, double h, double v) const {
+    if (s == NULL) return;
     double wd(c * width(s));
     double ht(c * (hi - lo));
 

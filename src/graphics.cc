@@ -232,6 +232,7 @@ void graphics_render() {
 
     sprintf(buffer, "%.1lf", physics_get_score());
     graphics_print(buffer, 700, 30, 2, 1, 0);
+    graphics_print(physics_get_message(), 400, 500, 2, 0.5, 1);
 
     SDL_GL_SwapBuffers();
 }
