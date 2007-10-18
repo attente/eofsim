@@ -8,52 +8,96 @@
 #include "netsend.h"
 #include "serial.h"
 
+static bool ended;
+
+static void
+publish_the_physics (int       serial,
+                     int       net,
+                     net_addr *remote)
+{
+  double x, y, dx, dy, angle;
+
+  netsend_packet (net, remote);
+
+  physics_get_location (&x, &y);
+  physics_get_direction (&dx, &dy);
+  angle = physics_get_degrees ();
+
+  serial_write (serial, y / 10.0, x / 100.0, 75 + angle);
+}
+
+static void
+reset_the_physics (void)
+{
+  physics_initialise (10000, 1000, -200, 0);
+  physics_set_thrust (0);
+  physics_set_flaps (0);
+  ended = false;
+}
+
+static char
+check_sdl (void)
+{
+  SDL_Event event;
+
+  if (!SDL_PollEvent(&event))
+    return 0;
+
+  if (event.type == SDL_QUIT || (event.type == SDL_KEYDOWN &&
+                       event.key.keysym.sym == SDLK_ESCAPE))
+    exit (0);
+
+  if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_SPACE)
+    return ' ';
+
+  return 0;
+}
+
 int
 main (void)
 {
   net_addr remote;
+  int serial;
   int net;
-  int fd;
-
-  physics_initialise (10000, 1000, -200, 0);
-  physics_set_thrust (0);
-  physics_set_flaps (0);
 
   graphics_initialise ();
 
-  fd = serial_open ();
+  serial = serial_open ();
   net = net_open ();
 
-  net_addr_set (&remote, "172.20.0.249");
+  while (serial_ready (serial))
+    serial_read (serial);
+  net_addr_set (&remote, "10.0.0.2");
 
-  while (1)
+  while (true)
   {
-    SDL_Event event;
+    bool ended;
 
-    serial_read (fd);
-
-    poll(NULL, 0, 10);
-    physics_update ();
-
-    if (SDL_PollEvent(&event) &&
-        (event.type == SDL_QUIT || (event.type == SDL_KEYDOWN &&
-                         event.key.keysym.sym == SDLK_ESCAPE)))
-      return 0;
-
+    /* wait for user */
+    reset_the_physics ();
+    physics_set_message ("READY");
+    publish_the_physics (serial, net, &remote);
     graphics_render ();
-    netsend_packet (net, &remote);
 
+    while (!serial_ready (serial))
+      check_sdl ();
+
+    reset_the_physics ();
+    ended = false;
+    while (!ended)
     {
-      double x, y, dx, dy, angle;
-      physics_get_location (&x, &y);
-      physics_get_direction (&dx, &dy);
-
-      angle = 75 - 180/M_PI * atan (dy/dx);
-      printf ("%f/%f is %f\n", dy, dx, angle);
-
-      serial_write (fd, y / 10.0, x / 100.0, angle);
+      serial_read (serial);
+      poll (NULL, 0, 10);
+      ended = physics_update ();
+      publish_the_physics (serial, net, &remote);
+      check_sdl ();
+      graphics_render ();
     }
-  }
 
-  return 0;
+    while (check_sdl () != ' ')
+      poll (NULL, 0, 10);
+
+    while (serial_ready (serial))
+      serial_read (serial);
+  }
 }

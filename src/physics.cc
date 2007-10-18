@@ -9,8 +9,11 @@ void physics_initialise(double  x,
                         double  y,
                         double dx,
                         double dy) {
-    obj = new plane(x, y, dx, dy);
-    obj->start();
+  if (obj)
+    delete obj;
+
+  obj = new plane(x, y, dx, dy);
+  obj->start();
 }
 
 void physics_destroy() {
@@ -54,8 +57,8 @@ void physics_set_flaps(int value) {
     obj->wings(value);
 }
 
-void physics_update() {
-    obj->update();
+bool physics_update() {
+    return obj->update();
 }
 
 double
@@ -73,5 +76,11 @@ physics_get_message (void)
 void
 physics_set_message (const char *message)
 {
-  obj->set_message (message);
+  obj->set_message (message, 100);
+}
+
+void
+physics_landing_gear (void)
+{
+  obj->landing_gear ();
 }

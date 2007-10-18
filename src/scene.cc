@@ -4,6 +4,7 @@
 #include "physics.h"
 
 #include <vector>
+#include <cmath>
 
 const int size(100), height(1000);
 static double f(int i, int j);
@@ -195,6 +196,11 @@ void scene::render(int mode) const {
     glPushMatrix();
     glTranslated(view.x.x, view.x.y, view.x.z);
     glRotated(physics_get_degrees() - 90, 1, 0, 0);
+
+    if (mode == 1) {
+      double factor(std::fabs(view.x.z) / 400);
+      glScaled(1 + factor, 1 + factor, 1 + factor);
+    }
 
     glColor3d(0.5, 0, 0);
     obj.render();

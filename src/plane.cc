@@ -54,12 +54,15 @@ void plane::wings(int angle) {
 
 void plane::start() {
     clock.update();
+    start_time = clock.time();
+    message = NULL;
+    message_expiry = 0;
+    gear_down = false;
 }
 
-void plane::update() {
+bool plane::update() {
     double time(clock.delta() / 1000);
     bool was_grounded;
-
 
     was_grounded = pos.y <= 0;
 
@@ -80,7 +83,10 @@ void plane::update() {
 
     clock.update();
     if (clock.time() > message_expiry)
+    {
+      message_prio = 0;
       message = NULL;
+    }
 
     bool grounded;
 
@@ -90,14 +96,27 @@ void plane::update() {
     {
       if (!was_grounded)
       {
-        score += 1000000 - vel.y * 1000;
-        set_message ("LANDED");
+        score += vel.y * 1000;
+
+        if (gear_down)
+        {
+          set_message ("LANDED", 10);
+          score += 100000;
+        }
+        else
+          set_message ("NO LANDING GEAR", 10);
       }
 
       if (pos.z <= -282 || pos.z >= 1000)
       {
-        set_message ("GRASS PENALTY");
-        score -= vel.x * time * 200;
+        set_message ("GRASS PENALTY", 5);
+        score += vel.z * time * 40;
+      }
+
+      if (vel.z >= -1)
+      {
+        set_message ("DONE", 100);
+        return true;
       }
 
       pos.y = 0;
@@ -107,24 +126,45 @@ void plane::update() {
     {
       if (was_grounded)
       {
-        set_message ("LIFTED OFF");
-        score -= 1000000;
+        set_message ("LIFTED OFF", 10);
+        if (gear_down)
+          score -= 100000;
       }
     }
 
     if (pos.z >= 5000)
-      score -= fabs (pos.y - 1000);
+      score -= fabs (pos.y - 1000) * 0.1;
+
+    return false;
 }
 
 double
 plane::get_score (void)
 {
-  return score;
+  return 100000 - 7896.55 + score - 0.1*(clock.time() - start_time) - fabs(pos.z)*log(fabs(pos.z));
 }
 
 void
-plane::set_message (const char *msg)
+plane::set_message (const char *msg, int prio)
 {
+  if (message_prio > prio)
+    return;
+
   message = msg;
-  message_expiry = clock.time() + 1000;
+  message_expiry = clock.time() + 5000;
+  message_prio = prio;
+}
+
+void
+plane::landing_gear (void)
+{
+  static char lgmsg[50];
+
+  if (gear_down)
+    return;
+
+  sprintf (lgmsg, "LANDING GEAR AT %.1fm\n", pos.y);
+  score -= fabs (200 - pos.y) * 10;
+  set_message (lgmsg, 5);
+  gear_down = true;
 }

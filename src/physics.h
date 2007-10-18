@@ -3,6 +3,8 @@
 
 #ifdef __cplusplus
 extern "C" {
+#else
+#include <stdbool.h>
 #endif
 
 void physics_initialise(double  x,
@@ -23,11 +25,12 @@ int physics_get_flaps(void);
 void physics_set_thrust(int value);
 void physics_set_flaps(int value);
 
-void physics_update(void);
+bool physics_update(void);
 
 double physics_get_score (void);
 const char *physics_get_message (void);
 void physics_set_message (const char *message);
+void physics_landing_gear (void);
 
 #ifdef __cplusplus
 }

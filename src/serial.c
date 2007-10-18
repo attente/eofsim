@@ -1,3 +1,4 @@
+#include <sys/poll.h>
 #include <termios.h>
 #include <stdbool.h>
 #include <string.h>
@@ -57,9 +58,12 @@ serial_shift (char *buffer, int *length, int shift)
 static void
 serial_packet (char pkt[3])
 {
-  printf ("%d\t%d\t%d\n", pkt[0]-'m', pkt[1]-'m', pkt[2]-'m');
   physics_set_thrust (pkt[0] - 'm');
   physics_set_flaps (pkt[1] - 'm');
+
+  if (pkt[2] != 'm')
+    physics_landing_gear ();
+
   physics_update ();
 }
 
@@ -124,4 +128,17 @@ serial_write (int    fd,
 
   byte = serial_conversion (c);
   write (fd, &byte, sizeof byte);
+}
+
+/* the polling gods will be angry....
+ */
+bool
+serial_ready (int fd)
+{
+  struct pollfd pfd;
+
+  pfd.fd = fd;
+  pfd.events = POLLIN;
+
+  return (poll (&pfd, 1, 100) > 0);
 }
