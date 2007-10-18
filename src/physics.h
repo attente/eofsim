@@ -11,6 +11,9 @@ void physics_initialise(double  x,
                         double dy);
 void physics_destroy(void);
 
+double physics_get_degrees(void);
+double physics_get_radians(void);
+
 void physics_get_location(double *x, double *y);
 void physics_get_direction(double *x, double *y);
 

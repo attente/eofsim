@@ -4,7 +4,7 @@ GENERATED = conversion.c
 
 core = vector.cc
 physics = plane.cc physics.cc timer.cc
-graphics = camera.cc font.cc graphics.cc scene.cc texture.cc
+graphics = camera.cc font.cc graphics.cc mesh.cc scene.cc texture.cc
 
 AM_CFLAGS = -Wall -Wwrite-strings -Wmissing-prototypes $(sdl_CFLAGS)
 AM_CXXFLAGS = -Wall -Wwrite-strings $(sdl_CFLAGS)

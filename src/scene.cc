@@ -9,7 +9,8 @@ const int size(100), height(1000);
 static double f(int i, int j);
 
 scene::scene() : running(true), ground("../data/ground.png"),
-                 runway("../data/runway.png"), list(glGenLists(2)) {
+                 runway("../data/runway.png"), list(glGenLists(2)),
+                 obj("../data/plane.raw") {
     const double limit(4E4);
 
     glNewList(list, GL_COMPILE);
@@ -102,18 +103,25 @@ void scene::stop() {
 }
 
 void scene::render() const {
+    const double back(15), above(5);
     const double h(2.00);
     camera view;
 
     physics_get_location(&view.x.z, &view.x.y);
-    physics_get_direction(&view.y.z, &view.y.y);
-    view.z.y = -view.y.z;
-    view.z.z = view.y.y;
 
-    if (view.x.z < h)
-        view.x.z = h;
+    view.x.y += above;
+    view.x.z += back;
+    view.y.y = -above;
+    view.y.z = -back;
+    view.z.y = back;
+    view.z.z = -above;
+
+    if (view.x.y < h)
+        view.x.y = h;
 
     view.position();
+    view.x.y -= above;
+    view.x.z -= back;
 
     glPushMatrix();
     glTranslated(view.x.x, 0, view.x.z);
@@ -121,6 +129,19 @@ void scene::render() const {
     glPopMatrix();
 
     glCallList(list + 1);
+
+    glPushMatrix();
+    glTranslated(view.x.x, view.x.y, view.x.z);
+    glRotated(physics_get_degrees(), 1, 0, 0);
+
+    glColorMaterial(GL_FRONT_AND_BACK, GL_EMISSION);
+    glEnable(GL_COLOR_MATERIAL);
+    glColor3d(0.5, 0, 0);
+
+    obj.render();
+
+    glDisable(GL_COLOR_MATERIAL);
+    glPopMatrix();
 }
 
 static double f(int i, int j) {

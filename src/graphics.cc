@@ -46,13 +46,35 @@ int graphics_initialise() {
     }
 
     glEnable(GL_BLEND);
+    glEnable(GL_LIGHT0);
     glEnable(GL_TEXTURE_2D);
 
     glClearColor(0.7, 0.9, 1.0, 1.0);
-    GLfloat bright[] = { 1, 1, 1, 1 };
+    GLfloat params[] = { 1, 1, 1, 1 };
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_BLEND);
-    glTexEnvfv(GL_TEXTURE_ENV, GL_TEXTURE_ENV_COLOR, bright);
+    glTexEnvfv(GL_TEXTURE_ENV, GL_TEXTURE_ENV_COLOR, params);
+
+    params[0] = 0.20;
+    params[1] = 0.20;
+    params[2] = 0.20;
+    params[3] = 1.00;
+    glLightfv(GL_LIGHT0, GL_AMBIENT, params);
+    params[0] = 0.50;
+    params[1] = 0.50;
+    params[2] = 0.50;
+    params[3] = 1.00;
+    glLightfv(GL_LIGHT0, GL_DIFFUSE, params);
+    params[0] = 0.80;
+    params[1] = 0.80;
+    params[2] = 0.80;
+    params[3] = 1.00;
+    glLightfv(GL_LIGHT0, GL_SPECULAR, params);
+    params[0] = -1.00;
+    params[1] = 2.00;
+    params[2] = 1.00;
+    params[3] = 0.00;
+    glLightfv(GL_LIGHT0, GL_POSITION, params);
 
     glyph = new font("../data/font.fnt");
     sim = new scene();
@@ -137,6 +159,7 @@ void graphics_destroy() {
 
     glDeleteLists(list, 1);
     glDisable(GL_TEXTURE_2D);
+    glDisable(GL_LIGHT0);
     glDisable(GL_BLEND);
     SDL_Quit();
 }
@@ -162,7 +185,7 @@ void graphics_render() {
     double x, y;
     physics_get_location(&x, &y);
 
-    y = 500 - y / 5;
+    y = 500 - 3 * y / 10;
     glColor4d(0, 0, 0, 0.80);
     glVertex2d(780, y - 5);
     glVertex2d(770, y);

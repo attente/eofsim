@@ -2,6 +2,7 @@
 #define SCENE_HH
 
 #include "sdl.hh"
+#include "mesh.hh"
 #include "texture.hh"
 
 class scene {
@@ -19,6 +20,7 @@ private:
     texture ground;
     texture runway;
     GLuint list;
+    mesh obj;
 };
 
 #endif

@@ -1,8 +1,17 @@
 #include <sys/socket.h>
+#include <math.h>
 
 #include "netphysics.h"
 
 static struct net_state state;
+
+double physics_get_degrees(void) {
+    return physics_get_radians() * 180 / M_PI;
+}
+
+double physics_get_radians(void) {
+    return atan2(state.y, -state.x);
+}
 
 void
 physics_get_direction (double *dxptr,

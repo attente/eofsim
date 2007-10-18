@@ -1,6 +1,8 @@
 #include "physics.h"
 #include "plane.hh"
 
+#include <cmath>
+
 static plane *obj;
 
 void physics_initialise(double  x,
@@ -13,6 +15,14 @@ void physics_initialise(double  x,
 
 void physics_destroy() {
     delete obj;
+}
+
+double physics_get_degrees() {
+    return physics_get_radians() * 180 / M_PI;
+}
+
+double physics_get_radians() {
+    return atan2(obj->direction().y, -obj->direction().z);
 }
 
 void physics_get_location(double *x, double *y) {
