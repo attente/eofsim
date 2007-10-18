@@ -52,3 +52,9 @@ netphysics_read_packet (int fd)
 {
   return recv (fd, &state, sizeof state, MSG_TRUNC) == sizeof state;
 }
+
+const char *
+physics_get_message (void)
+{
+  return NULL;
+}

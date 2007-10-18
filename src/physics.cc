@@ -63,3 +63,9 @@ physics_get_score (void)
 {
   return obj->get_score();
 }
+
+const char *
+physics_get_message (void)
+{
+  return NULL;
+}

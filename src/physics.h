@@ -26,6 +26,7 @@ void physics_set_flaps(int value);
 void physics_update(void);
 
 double physics_get_score (void);
+const char *physics_get_message (void);
 
 #ifdef __cplusplus
 }
