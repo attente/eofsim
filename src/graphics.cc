@@ -10,6 +10,7 @@
 static GLuint list;
 static font *glyph;
 static scene *sim;
+static int mode;
 
 int graphics_initialise() {
     if (SDL_Init(SDL_INIT_VIDEO)) {
@@ -55,9 +56,9 @@ int graphics_initialise() {
     glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_BLEND);
     glTexEnvfv(GL_TEXTURE_ENV, GL_TEXTURE_ENV_COLOR, params);
 
-    params[0] = 0.50;
-    params[1] = 0.50;
-    params[2] = 0.50;
+    params[0] = 0.40;
+    params[1] = 0.40;
+    params[2] = 0.40;
     params[3] = 1.00;
     glLightfv(GL_LIGHT0, GL_AMBIENT, params);
     params[0] = 0.60;
@@ -70,11 +71,6 @@ int graphics_initialise() {
     params[2] = 0.70;
     params[3] = 1.00;
     glLightfv(GL_LIGHT0, GL_SPECULAR, params);
-    params[0] = -1.00;
-    params[1] = 5.00;
-    params[2] = 5.00;
-    params[3] = 0.00;
-    glLightfv(GL_LIGHT0, GL_POSITION, params);
 
     glyph = new font("../data/font.fnt");
     sim = new scene();
@@ -190,7 +186,7 @@ int graphics_initialise() {
     graphics_print("Current Score:", 100, 30, 2, 0, 0);
 
     glEndList();
-
+    mode = 0;
     return 0;
 }
 
@@ -208,7 +204,7 @@ void graphics_destroy() {
 void graphics_render() {
     char buffer[80];
 
-    sim->render();
+    sim->render(mode);
 
     glCallList(list);
 
@@ -246,6 +242,10 @@ void graphics_render() {
     graphics_print(physics_get_message(), 400, 500, 2, 0.5, 1);
 
     SDL_GL_SwapBuffers();
+}
+
+void graphics_mode(int m) {
+    mode = m;
 }
 
 void graphics_stop() {

@@ -118,26 +118,44 @@ void scene::stop() {
     running = false;
 }
 
-void scene::render() const {
+void scene::render(int mode) const {
     const double back(15), above(5);
     const double h(2.00);
     camera view;
 
     physics_get_location(&view.x.z, &view.x.y);
 
-    view.x.y += above;
-    view.x.z += back;
-    view.y.y = -above;
-    view.y.z = -back;
-    view.z.y = back;
-    view.z.z = -above;
+    if (!mode) {
+        view.x.y += above;
+        view.x.z += back;
+        view.y.y = -above;
+        view.y.z = -back;
+        view.z.y = back;
+        view.z.z = -above;
 
-    if (view.x.y < h)
-        view.x.y = h;
+        if (view.x.y < h)
+            view.x.y = h;
 
-    view.position();
-    view.x.y -= above;
-    view.x.z -= back;
+        view.position();
+        view.x.y -= above;
+        view.x.z -= back;
+
+        GLfloat params[] = { -1.0, 5.0, 5.0, 0.0 };
+        glLightfv(GL_LIGHT0, GL_POSITION, params);
+    }
+    else if (mode == 1) {
+        view.y.y = view.x.y;
+        view.y.z = view.x.z;
+        view.x.x = 30;
+        view.x.y = 15;
+        view.x.z = -60;
+        view.y -= view.x;
+        view.z.y = 1;
+        view.position();
+
+        GLfloat params[] = { -1.0, 5.0, -2.0, 0.0 };
+        glLightfv(GL_LIGHT0, GL_POSITION, params);
+    }
 
     glPushMatrix();
     glTranslated(view.x.x, 0, view.x.z);
@@ -145,6 +163,9 @@ void scene::render() const {
     glPopMatrix();
 
     glCallList(list + 1);
+
+    view.x.x = 0;
+    physics_get_location(&view.x.z, &view.x.y);
 
     if (view.x.y < 100) {
         double s((view.x.y - h) / 100);
@@ -166,7 +187,7 @@ void scene::render() const {
     glRotated(-90, 1, 0, 0);
     glScaled(2.5, 2.5, 2.5);
 
-    glColor3d(0.1, 0.1, 0.1);
+    glColor3d(0.02, 0.02, 0.02);
     tower.render();
 
     glPopMatrix();

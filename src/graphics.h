@@ -8,6 +8,7 @@ extern "C" {
 int graphics_initialise(void);
 void graphics_destroy(void);
 void graphics_render(void);
+void graphics_mode(int m);
 
 void graphics_stop(void);
 bool graphics_loop(void);

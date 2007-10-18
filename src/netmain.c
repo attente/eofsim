@@ -20,6 +20,7 @@ main (void)
   }
 
   graphics_initialise ();
+  graphics_mode(1);
 
   while (netphysics_read_packet (fd))
   {

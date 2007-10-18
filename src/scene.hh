@@ -12,7 +12,7 @@ public:
 
     void stop();
     bool loop() const;
-    void render() const;
+    void render(int mode = 0) const;
 
 private:
     bool running;
