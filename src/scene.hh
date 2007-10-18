@@ -20,6 +20,7 @@ private:
     texture ground;
     texture runway;
     GLuint list;
+    mesh tower;
     mesh obj;
 };
 

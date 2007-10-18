@@ -10,7 +10,7 @@ static double f(int i, int j);
 
 scene::scene() : running(true), ground("../data/ground.png"),
                  runway("../data/runway.png"), list(glGenLists(2)),
-                 obj("../data/plane.raw") {
+                 tower("../data/tower.raw"), obj("../data/biplane.raw") {
     const double limit(4E4);
 
     glNewList(list, GL_COMPILE);
@@ -130,18 +130,28 @@ void scene::render() const {
 
     glCallList(list + 1);
 
-    glPushMatrix();
-    glTranslated(view.x.x, view.x.y, view.x.z);
-    glRotated(physics_get_degrees(), 1, 0, 0);
-
+    glClear(GL_DEPTH_BUFFER_BIT);
     glColorMaterial(GL_FRONT_AND_BACK, GL_EMISSION);
     glEnable(GL_COLOR_MATERIAL);
-    glColor3d(0.5, 0, 0);
+    glPushMatrix();
+    glTranslated(30, 0, 600);
+    glRotated(-90, 1, 0, 0);
+    glRotated(5, 0, 1, 0);
 
+    glColor3d(0.4, 0.4, 0.4);
+    tower.render();
+
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslated(view.x.x, view.x.y, view.x.z);
+    glRotated(physics_get_degrees() - 90, 1, 0, 0);
+
+    glColor3d(0.6, 0.1, 0.1);
     obj.render();
 
-    glDisable(GL_COLOR_MATERIAL);
     glPopMatrix();
+    glDisable(GL_COLOR_MATERIAL);
 }
 
 static double f(int i, int j) {

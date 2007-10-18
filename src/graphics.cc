@@ -60,19 +60,19 @@ int graphics_initialise() {
     params[2] = 0.20;
     params[3] = 1.00;
     glLightfv(GL_LIGHT0, GL_AMBIENT, params);
+    params[0] = 0.40;
+    params[1] = 0.40;
+    params[2] = 0.40;
+    params[3] = 1.00;
+    glLightfv(GL_LIGHT0, GL_DIFFUSE, params);
     params[0] = 0.50;
     params[1] = 0.50;
     params[2] = 0.50;
     params[3] = 1.00;
-    glLightfv(GL_LIGHT0, GL_DIFFUSE, params);
-    params[0] = 0.60;
-    params[1] = 0.60;
-    params[2] = 0.60;
-    params[3] = 1.00;
     glLightfv(GL_LIGHT0, GL_SPECULAR, params);
     params[0] = 1.00;
-    params[1] = 3.00;
-    params[2] = 2.00;
+    params[1] = 5.00;
+    params[2] = 5.00;
     params[3] = 0.00;
     glLightfv(GL_LIGHT0, GL_POSITION, params);
 

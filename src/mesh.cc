@@ -9,7 +9,6 @@ mesh::mesh(const char *file) {
 
     list = glGenLists(1);
     glNewList(list, GL_COMPILE);
-    glClear(GL_DEPTH_BUFFER_BIT);
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_LIGHTING);
     glBegin(GL_QUADS);
