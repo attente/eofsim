@@ -14,6 +14,7 @@ const double tilt(4E-3);
 
 plane::plane(double dst, double alt, double dx, double dy) :
 message (NULL), score (0.), message_expiry(0), pos(0, alt, dst), vel(0, dy, dx), impact(2), thrust(0), flaps(0) {
+  score = dst * log (dst) + 0.001;
 }
 
 const vector &plane::position() const {
@@ -109,13 +110,13 @@ bool plane::update() {
 
       if (pos.z <= -282 || pos.z >= 1000)
       {
-        set_message ("GRASS PENALTY", 5);
+        set_message ("GRASS DAMAGE", 5);
         score += vel.z * time * 40;
       }
 
       if (vel.z >= -1)
       {
-        set_message ("DONE", 100);
+        set_message ("STOPPED", 100);
         return true;
       }
 
@@ -141,7 +142,7 @@ bool plane::update() {
 double
 plane::get_score (void)
 {
-  return 100000 - 7896.55 + score - 0.1*(clock.time() - start_time) - fabs(pos.z)*log(fabs(pos.z));
+  return score - 0.1*(clock.time() - start_time) - fabs(pos.z)*log(fabs(pos.z));
 }
 
 void
@@ -167,4 +168,10 @@ plane::landing_gear (void)
   score -= fabs (200 - pos.y) * 10;
   set_message (lgmsg, 5);
   gear_down = true;
+}
+
+bool
+plane::is_shaking (void)
+{
+  return (pos.z <= -282 || pos.z >= 1000) && (pos.y == 0);
 }

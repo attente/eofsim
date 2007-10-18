@@ -23,6 +23,7 @@ public:
     void landing_gear(void);
     void start();
     bool update();
+    bool is_shaking (void);
 
     const char *message;
     timer clock;

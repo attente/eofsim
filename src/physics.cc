@@ -84,3 +84,9 @@ physics_landing_gear (void)
 {
   obj->landing_gear ();
 }
+
+bool
+physics_is_shaking (void)
+{
+  return obj->is_shaking ();
+}

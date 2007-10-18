@@ -31,6 +31,7 @@ double physics_get_score (void);
 const char *physics_get_message (void);
 void physics_set_message (const char *message);
 void physics_landing_gear (void);
+bool physics_is_shaking (void);
 
 #ifdef __cplusplus
 }
