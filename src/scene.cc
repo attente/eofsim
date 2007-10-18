@@ -10,7 +10,7 @@ static double f(int i, int j);
 
 scene::scene() : running(true), ground("../data/ground.png"),
                  runway("../data/runway.png"), shadow("../data/shadow.png"),
-                 list(glGenLists(2)), tower("../data/tower.raw"),
+                 list(glGenLists(3)), tower("../data/tower.raw"),
                  obj("../data/biplane.raw") {
     const double limit(4E4);
 
@@ -89,10 +89,25 @@ scene::scene() : running(true), ground("../data/ground.png"),
     glEnd();
     glBindTexture(GL_TEXTURE_2D, 0);
     glEndList();
+
+    glNewList(list + 2, GL_COMPILE);
+    glBindTexture(GL_TEXTURE_2D, shadow);
+    glBegin(GL_TRIANGLE_STRIP);
+    glTexCoord2d(0, 0);
+    glVertex3d(-4, 0, -4);
+    glTexCoord2d(1, 0);
+    glVertex3d( 4, 0, -4);
+    glTexCoord2d(0, 1);
+    glVertex3d(-4, 0,  4);
+    glTexCoord2d(1, 1);
+    glVertex3d( 4, 0,  4);
+    glEnd();
+    glBindTexture(GL_TEXTURE_2D, 0);
+    glEndList();
 }
 
 scene::~scene() {
-    glDeleteLists(list, 2);
+    glDeleteLists(list, 3);
 }
 
 bool scene::loop() const {
@@ -130,6 +145,19 @@ void scene::render() const {
     glPopMatrix();
 
     glCallList(list + 1);
+
+    if (view.x.y < 100) {
+        double s((view.x.y - h) / 100);
+
+        glPushMatrix();
+        glColor4d(0, 0, 0, (1 - s) * 0.75);
+        glTranslated(view.x.x + 40 * s + 3,
+                     0,
+                     view.x.z - 20 * s + 3);
+        glScaled(s + 1, 1, s + 1);
+        glCallList(list + 2);
+        glPopMatrix();
+    }
 
     glClear(GL_DEPTH_BUFFER_BIT);
     glEnable(GL_COLOR_MATERIAL);
