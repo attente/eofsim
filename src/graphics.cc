@@ -56,9 +56,9 @@ int graphics_initialise() {
     glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_BLEND);
     glTexEnvfv(GL_TEXTURE_ENV, GL_TEXTURE_ENV_COLOR, params);
 
-    params[0] = 0.40;
-    params[1] = 0.40;
-    params[2] = 0.40;
+    params[0] = 0.30;
+    params[1] = 0.30;
+    params[2] = 0.30;
     params[3] = 1.00;
     glLightfv(GL_LIGHT0, GL_AMBIENT, params);
     params[0] = 0.60;
@@ -66,9 +66,9 @@ int graphics_initialise() {
     params[2] = 0.60;
     params[3] = 1.00;
     glLightfv(GL_LIGHT0, GL_DIFFUSE, params);
-    params[0] = 0.70;
-    params[1] = 0.70;
-    params[2] = 0.70;
+    params[0] = 0.80;
+    params[1] = 0.80;
+    params[2] = 0.80;
     params[3] = 1.00;
     glLightfv(GL_LIGHT0, GL_SPECULAR, params);
 
@@ -125,13 +125,6 @@ int graphics_initialise() {
     glColor4d(1, 0, 0, 0.60);
     glVertex2d(100, 30);
     glVertex2d(100, 35);
-    glVertex2d(197, 30);
-    glVertex2d(197, 35);
-    glColor4d(1, 1, 1, 0.60);
-    glVertex2d(198, 30);
-    glVertex2d(198, 35);
-    glVertex2d(202, 30);
-    glVertex2d(202, 35);
     glColor4d(1, 0.5, 0, 0.60);
     glVertex2d(203, 30);
     glVertex2d(203, 35);

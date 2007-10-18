@@ -21,6 +21,7 @@ mesh::mesh(const char *file) {
 
         if (!input.good()) break;
         n = (p[1] - p[0]).cross(p[2] - p[0]);
+        n *= 1.0 / n.length();
 
         glNormal3d(n.x, n.y, n.z);
         glVertex3d(p[0].x, p[0].y, p[0].z);

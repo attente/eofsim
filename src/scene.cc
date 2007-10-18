@@ -4,6 +4,7 @@
 #include "physics.h"
 
 #include <vector>
+#include <cstdlib>
 #include <cmath>
 
 const int size(100), height(1000);
@@ -11,8 +12,9 @@ static double f(int i, int j);
 
 scene::scene() : running(true), ground("../data/ground.png"),
                  runway("../data/runway.png"), shadow("../data/shadow.png"),
-                 list(glGenLists(3)), tower("../data/tower.raw"),
-                 obj("../data/biplane.raw") {
+                 stills("../data/static.png"), list(glGenLists(4)),
+                 tower("../data/tower.raw"), obj("../data/biplane.raw"),
+                 walkx(0), walky(0) {
     const double limit(4E4);
 
     glNewList(list, GL_COMPILE);
@@ -76,6 +78,21 @@ scene::scene() : running(true), ground("../data/ground.png"),
     glEndList();
 
     glNewList(list + 1, GL_COMPILE);
+    glBindTexture(GL_TEXTURE_2D, stills);
+    glBegin(GL_TRIANGLE_STRIP);
+    glTexCoord2d(0, 0);
+    glVertex3d(-2E4, 0, -2E4);
+    glTexCoord2d(5, 0);
+    glVertex3d( 2E4, 0, -2E4);
+    glTexCoord2d(0, 5);
+    glVertex3d(-2E4, 0,  2E4);
+    glTexCoord2d(5, 5);
+    glVertex3d( 2E4, 0,  2E4);
+    glEnd();
+    glBindTexture(GL_TEXTURE_2D, 0);
+    glEndList();
+
+    glNewList(list + 2, GL_COMPILE);
     glColor3d(0, 0, 0);
     glBindTexture(GL_TEXTURE_2D, runway);
     glBegin(GL_TRIANGLE_STRIP);
@@ -91,7 +108,7 @@ scene::scene() : running(true), ground("../data/ground.png"),
     glBindTexture(GL_TEXTURE_2D, 0);
     glEndList();
 
-    glNewList(list + 2, GL_COMPILE);
+    glNewList(list + 3, GL_COMPILE);
     glBindTexture(GL_TEXTURE_2D, shadow);
     glBegin(GL_TRIANGLE_STRIP);
     glTexCoord2d(0, 0);
@@ -108,7 +125,7 @@ scene::scene() : running(true), ground("../data/ground.png"),
 }
 
 scene::~scene() {
-    glDeleteLists(list, 3);
+    glDeleteLists(list, 4);
 }
 
 bool scene::loop() const {
@@ -127,6 +144,8 @@ void scene::render(int mode) const {
     physics_get_location(&view.x.z, &view.x.y);
 
     if (!mode) {
+        double vx(0), vy(0);
+
         view.x.y += above;
         view.x.z += back;
         view.y.y = -above;
@@ -137,7 +156,29 @@ void scene::render(int mode) const {
         if (view.x.y < h)
             view.x.y = h;
 
+        if (physics_is_shaking()) {
+            physics_get_direction(&vx, &vy);
+
+            walkx += rand() % 3 - 1;
+            walky += rand() % 3 - 1;
+
+            if (walkx < -10) walkx = -10;
+            else if (walkx > 10) walky = 10;
+            if (walky < -10) walkx = -10;
+            else if (walky > 10) walky = 10;
+
+            view.x.x += walkx * vx / 1000;
+            view.x.y += walky * vx / 1000;
+        }
+        else walkx = walky = 0;
+
         view.position();
+
+        if (physics_is_shaking()) {
+            view.x.x -= walkx * vx / 1000;
+            view.x.y -= walky * vx / 1000;
+        }
+
         view.x.y -= above;
         view.x.z -= back;
 
@@ -160,10 +201,22 @@ void scene::render(int mode) const {
 
     glPushMatrix();
     glTranslated(view.x.x, 0, view.x.z);
+    glMatrixMode(GL_TEXTURE);
+    glColor3d(0, 0, 0);
+    glPushMatrix();
+    glTranslated(0, view.x.z / 4E4, 0);
     glCallList(list);
     glPopMatrix();
-
+    glColor4d(0, 0, 0, 0.2);
+    glPushMatrix();
+    glTranslated(0, view.x.z * 5 / 4E4, 0);
     glCallList(list + 1);
+    glPopMatrix();
+    glMatrixMode(GL_MODELVIEW);
+    glPopMatrix();
+
+    glColor4d(0, 0, 0, 1);
+    glCallList(list + 2);
 
     view.x.x = 0;
     physics_get_location(&view.x.z, &view.x.y);
@@ -177,7 +230,7 @@ void scene::render(int mode) const {
                      0,
                      view.x.z - 20 * s + 3);
         glScaled(s + 1, 1, s + 1);
-        glCallList(list + 2);
+        glCallList(list + 3);
         glPopMatrix();
     }
 
@@ -188,7 +241,7 @@ void scene::render(int mode) const {
     glRotated(-90, 1, 0, 0);
     glScaled(2.5, 2.5, 2.5);
 
-    glColor3d(0.02, 0.02, 0.02);
+    glColor3d(0.90, 0.90, 0.90);
     tower.render();
 
     glPopMatrix();
@@ -202,7 +255,7 @@ void scene::render(int mode) const {
       glScaled(1 + factor, 1 + factor, 1 + factor);
     }
 
-    glColor3d(0.5, 0, 0);
+    glColor3d(0.80, 0, 0);
     obj.render();
 
     glPopMatrix();

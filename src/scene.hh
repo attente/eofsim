@@ -20,9 +20,12 @@ private:
     texture ground;
     texture runway;
     texture shadow;
+    texture stills;
     GLuint list;
     mesh tower;
     mesh obj;
+
+    mutable int walkx, walky;
 };
 
 #endif

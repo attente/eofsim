@@ -47,6 +47,10 @@ physics_get_score(void)
   return state.score;
 }
 
+bool physics_is_shaking(void) {
+  return false;
+}
+
 bool
 netphysics_read_packet (int fd)
 {

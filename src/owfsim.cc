@@ -36,6 +36,9 @@ int main(int argc, char **argv) {
                     break;
                 case SDL_KEYDOWN:
                     switch (event.key.keysym.sym) {
+                        case SDLK_SPACE:
+                            physics_landing_gear();
+                            break;
                         case SDLK_ESCAPE:
                             graphics_stop();
                             break;
@@ -53,8 +56,8 @@ int main(int argc, char **argv) {
         int wait(static_cast< int >(clock.delta()));
         if (wait < delay) SDL_Delay(delay - wait);
 
-        physics_update();
-        graphics_render();
+        if (!physics_update())
+            graphics_render();
     }
 
     graphics_destroy();
