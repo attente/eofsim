@@ -95,7 +95,7 @@ serial_conversion (double x)
   int index;
 
   if (x < 0)
-    return 240;
+    return 236;
 
   index = (x * 10.0) + 0.5;
 

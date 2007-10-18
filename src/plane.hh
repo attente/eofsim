@@ -11,12 +11,14 @@ public:
     const vector &position() const;
     const vector &velocity() const;
     vector direction() const;
+    double get_score (void);
 
     int engine() const;
     void engine(int power);
 
     int wings() const;
     void wings(int angle);
+    double score;
 
     void start();
     void update();

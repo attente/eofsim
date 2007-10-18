@@ -1,6 +1,6 @@
 bin_PROGRAMS = eofsim owfsim netwatch
 noinst_PROGRAMS = mkconv
-GENERATED = conversion.c
+CLEANFILES = conversion.c
 
 core = vector.cc
 physics = plane.cc physics.cc timer.cc

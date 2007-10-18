@@ -22,6 +22,9 @@ double physics_get_degrees() {
 }
 
 double physics_get_radians() {
+    if (obj->direction().z > -0.001)
+        return 0;
+
     return atan2(obj->direction().y, -obj->direction().z);
 }
 
@@ -53,4 +56,10 @@ void physics_set_flaps(int value) {
 
 void physics_update() {
     obj->update();
+}
+
+double
+physics_get_score (void)
+{
+  return obj->get_score();
 }

@@ -26,8 +26,8 @@ main (void)
     SDL_Event event;
 
     if (SDL_PollEvent(&event) &&
-        (event.type == SDL_QUIT || event.type == SDL_KEYDOWN &&
-                         event.key.keysym.sym == SDLK_ESCAPE))
+        (event.type == SDL_QUIT || (event.type == SDL_KEYDOWN &&
+                         event.key.keysym.sym == SDLK_ESCAPE)))
       return 0;
 
     graphics_render ();

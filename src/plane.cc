@@ -4,7 +4,6 @@
 
 const double drag(0.90);
 const double brake(0.15);
-const double height(0.00);
 const double gravity(-9.81);
 
 const double epsilon(1E-6);
@@ -14,7 +13,7 @@ const double bias(0);
 const double tilt(4E-3);
 
 plane::plane(double dst, double alt, double dx, double dy) :
-pos(0, alt, dst), vel(0, dy, dx), impact(2), thrust(0), flaps(0) {
+score (0.), pos(0, alt, dst), vel(0, dy, dx), impact(2), thrust(0), flaps(0) {
 }
 
 const vector &plane::position() const {
@@ -59,6 +58,9 @@ void plane::start() {
 
 void plane::update() {
     double time(clock.delta() / 1000);
+    bool was_grounded;
+
+    was_grounded = pos.y <= 0;
 
     vel.y += gravity * time;
     if (thrust >= 0) vel *= std::pow(drag, time);
@@ -76,10 +78,34 @@ void plane::update() {
     pos += vel * time;
     clock.update();
 
-    if (pos.y < height) {
-        if (impact > 1) impact = vel.y;
+    bool grounded;
 
-        pos.y = height;
-        vel.y = 0;
+    grounded = pos.y <= 0;
+
+    if (grounded)
+    {
+      if (!was_grounded)
+        score += 1000000 - vel.y * 1000;
+
+      if (pos.z <= -282 || pos.z >= 1000)
+        score -= vel.x * time * 200;
+
+      pos.y = 0;
+      vel.y = 0;
     }
+    else
+    {
+      if (was_grounded)
+        score -= 1000000;
+    }
+
+    if (pos.z >= 5000)
+      score -= fabs (pos.y - 1000);
+
+}
+
+double
+plane::get_score (void)
+{
+  return score;
 }
