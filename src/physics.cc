@@ -28,8 +28,8 @@ double physics_get_radians() {
     if (obj->direction().length() <= 1E-6)
         return 0;
 
-    if (obj->direction().z > -1E6) {
-        if (obj->direction().y > -1E6)
+    if (obj->direction().z > -1E-6) {
+        if (obj->direction().y > -1E-6)
             return atan2(obj->direction().y, -obj->direction().z) + M_PI;
         else
             return atan2(obj->direction().y, -obj->direction().z) - M_PI;
