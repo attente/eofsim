@@ -18,14 +18,17 @@ public:
 
     int wings() const;
     void wings(int angle);
-    double score;
+    void set_message (const char *msg);
 
     void start();
     void update();
 
+    const char *message;
     timer clock;
 
 private:
+    double score;
+    double message_expiry;
     vector pos, vel;
     double impact;
     int thrust;

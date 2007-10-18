@@ -13,7 +13,7 @@ const double bias(0);
 const double tilt(4E-3);
 
 plane::plane(double dst, double alt, double dx, double dy) :
-score (0.), pos(0, alt, dst), vel(0, dy, dx), impact(2), thrust(0), flaps(0) {
+message (NULL), score (0.), message_expiry(0), pos(0, alt, dst), vel(0, dy, dx), impact(2), thrust(0), flaps(0) {
 }
 
 const vector &plane::position() const {
@@ -60,6 +60,7 @@ void plane::update() {
     double time(clock.delta() / 1000);
     bool was_grounded;
 
+
     was_grounded = pos.y <= 0;
 
     vel.y += gravity * time;
@@ -76,7 +77,10 @@ void plane::update() {
     vel = vector(1, 0, 0).rotate(vel, a * vel.length());
 
     pos += vel * time;
+
     clock.update();
+    if (clock.time() > message_expiry)
+      message = NULL;
 
     bool grounded;
 
@@ -85,10 +89,16 @@ void plane::update() {
     if (grounded)
     {
       if (!was_grounded)
+      {
         score += 1000000 - vel.y * 1000;
+        set_message ("LANDED");
+      }
 
       if (pos.z <= -282 || pos.z >= 1000)
+      {
+        set_message ("GRASS PENALTY");
         score -= vel.x * time * 200;
+      }
 
       pos.y = 0;
       vel.y = 0;
@@ -96,16 +106,25 @@ void plane::update() {
     else
     {
       if (was_grounded)
+      {
+        set_message ("LIFTED OFF");
         score -= 1000000;
+      }
     }
 
     if (pos.z >= 5000)
       score -= fabs (pos.y - 1000);
-
 }
 
 double
 plane::get_score (void)
 {
   return score;
+}
+
+void
+plane::set_message (const char *msg)
+{
+  message = msg;
+  message_expiry = clock.time() + 1000;
 }

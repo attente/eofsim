@@ -67,5 +67,11 @@ physics_get_score (void)
 const char *
 physics_get_message (void)
 {
-  return NULL;
+  return obj->message;
+}
+
+void
+physics_set_message (const char *message)
+{
+  obj->set_message (message);
 }

@@ -27,6 +27,7 @@ void physics_update(void);
 
 double physics_get_score (void);
 const char *physics_get_message (void);
+void physics_set_message (const char *message);
 
 #ifdef __cplusplus
 }
