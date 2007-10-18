@@ -8,6 +8,7 @@ struct net_state
 {
   double x, y, dx, dy;
   int thrust, flaps;
+  double score;
 };
 
 typedef struct sockaddr_in net_addr;

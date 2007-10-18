@@ -41,6 +41,12 @@ physics_get_flaps (void)
   return state.flaps;
 }
 
+double
+physics_get_score(void)
+{
+  return state.score;
+}
+
 bool
 netphysics_read_packet (int fd)
 {

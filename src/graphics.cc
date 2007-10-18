@@ -55,9 +55,9 @@ int graphics_initialise() {
     glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_BLEND);
     glTexEnvfv(GL_TEXTURE_ENV, GL_TEXTURE_ENV_COLOR, params);
 
-    params[0] = 0.20;
-    params[1] = 0.20;
-    params[2] = 0.20;
+    params[0] = 0.30;
+    params[1] = 0.30;
+    params[2] = 0.30;
     params[3] = 1.00;
     glLightfv(GL_LIGHT0, GL_AMBIENT, params);
     params[0] = 0.40;
@@ -65,12 +65,12 @@ int graphics_initialise() {
     params[2] = 0.40;
     params[3] = 1.00;
     glLightfv(GL_LIGHT0, GL_DIFFUSE, params);
-    params[0] = 0.50;
-    params[1] = 0.50;
-    params[2] = 0.50;
+    params[0] = 0.40;
+    params[1] = 0.40;
+    params[2] = 0.40;
     params[3] = 1.00;
     glLightfv(GL_LIGHT0, GL_SPECULAR, params);
-    params[0] = 1.00;
+    params[0] = -1.00;
     params[1] = 5.00;
     params[2] = 5.00;
     params[3] = 0.00;
@@ -176,6 +176,8 @@ int graphics_initialise() {
     glVertex2d(770, 500);
     glEnd();
 
+    graphics_print("Current Score:", 100, 30, 2, 0, 0);
+
     glEndList();
 
     return 0;
@@ -193,6 +195,8 @@ void graphics_destroy() {
 }
 
 void graphics_render() {
+    char buffer[80];
+
     sim->render();
 
     glCallList(list);
@@ -225,6 +229,9 @@ void graphics_render() {
     glVertex2d(770, y);
     glVertex2d(780, y + 5);
     glEnd();
+
+    sprintf(buffer, "%.1lf", physics_get_score());
+    graphics_print(buffer, 700, 30, 2, 1, 0);
 
     SDL_GL_SwapBuffers();
 }

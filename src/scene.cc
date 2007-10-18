@@ -131,14 +131,13 @@ void scene::render() const {
     glCallList(list + 1);
 
     glClear(GL_DEPTH_BUFFER_BIT);
-    glColorMaterial(GL_FRONT_AND_BACK, GL_EMISSION);
     glEnable(GL_COLOR_MATERIAL);
     glPushMatrix();
     glTranslated(30, 0, 600);
     glRotated(-90, 1, 0, 0);
     glRotated(5, 0, 1, 0);
 
-    glColor3d(0.4, 0.4, 0.4);
+    glColor3d(0.1, 0.1, 0.1);
     tower.render();
 
     glPopMatrix();
@@ -147,7 +146,7 @@ void scene::render() const {
     glTranslated(view.x.x, view.x.y, view.x.z);
     glRotated(physics_get_degrees() - 90, 1, 0, 0);
 
-    glColor3d(0.6, 0.1, 0.1);
+    glColor3d(0.5, 0, 0);
     obj.render();
 
     glPopMatrix();

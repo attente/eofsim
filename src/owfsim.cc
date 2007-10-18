@@ -8,7 +8,7 @@ int main(int argc, char **argv) {
     if (error) return error;
     const int delay(40);
 
-    physics_initialise (10000, 1000, -238, 0);
+    physics_initialise (10000, 1000, -250, 0);
     physics_set_thrust(0);
     physics_set_flaps(0);
 
