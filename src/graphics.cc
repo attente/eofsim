@@ -65,14 +65,14 @@ int graphics_initialise() {
     params[2] = 0.50;
     params[3] = 1.00;
     glLightfv(GL_LIGHT0, GL_DIFFUSE, params);
-    params[0] = 0.80;
-    params[1] = 0.80;
-    params[2] = 0.80;
+    params[0] = 0.60;
+    params[1] = 0.60;
+    params[2] = 0.60;
     params[3] = 1.00;
     glLightfv(GL_LIGHT0, GL_SPECULAR, params);
-    params[0] = -1.00;
-    params[1] = 2.00;
-    params[2] = 1.00;
+    params[0] = 1.00;
+    params[1] = 3.00;
+    params[2] = 2.00;
     params[3] = 0.00;
     glLightfv(GL_LIGHT0, GL_POSITION, params);
 
@@ -87,7 +87,7 @@ int graphics_initialise() {
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 
-    glColor4d(0, 0, 0, 0.80);
+    glColor4d(0, 0, 0, 0.60);
     glBegin(GL_TRIANGLE_STRIP);
     glVertex2d(15, 90);
     glVertex2d(60, 90);
@@ -96,52 +96,80 @@ int graphics_initialise() {
     glEnd();
 
     glBegin(GL_TRIANGLE_STRIP);
-    glColor4d(1, 0, 0, 0.80);
+    glColor4d(1, 0, 0, 0.60);
     glVertex2d(30, 100);
     glVertex2d(35, 100);
-    glColor4d(1, 1, 0, 0.80);
+    glColor4d(1, 1, 0, 0.60);
     glVertex2d(30, 150);
     glVertex2d(35, 150);
-    glColor4d(0, 1, 0, 0.80);
+    glColor4d(0, 1, 0, 0.60);
     glVertex2d(30, 299);
     glVertex2d(35, 299);
-    glColor4d(0, 0, 1, 0.80);
+    glColor4d(0, 0, 1, 0.60);
     glVertex2d(30, 301);
     glVertex2d(35, 301);
-    glColor4d(0, 1, 1, 0.80);
+    glColor4d(0, 1, 1, 0.60);
     glVertex2d(30, 500);
     glVertex2d(35, 500);
     glEnd();
 
     glBegin(GL_TRIANGLE_STRIP);
-    glColor4d(1, 0, 1, 0.80);
+    glColor4d(1, 0, 1, 0.60);
     glVertex2d(40, 100);
     glVertex2d(45, 100);
-    glColor4d(0, 0, 1, 0.80);
+    glColor4d(0, 0, 1, 0.60);
     glVertex2d(40, 300);
     glVertex2d(45, 300);
-    glColor4d(1, 0, 1, 0.80);
+    glColor4d(1, 0, 1, 0.60);
     glVertex2d(40, 500);
     glVertex2d(45, 500);
     glEnd();
 
     glBegin(GL_TRIANGLE_STRIP);
-    glColor4d(0, 0, 0, 0.80);
+    glColor4d(0, 0, 0, 0.60);
+    glVertex2d(100, 30);
+    glVertex2d(100, 35);
+    glVertex2d(197, 30);
+    glVertex2d(197, 35);
+    glColor4d(1, 1, 1, 0.60);
+    glVertex2d(198, 30);
+    glVertex2d(198, 35);
+    glVertex2d(202, 30);
+    glVertex2d(202, 35);
+    glColor4d(0, 0, 0, 0.60);
+    glVertex2d(203, 30);
+    glVertex2d(203, 35);
+    glVertex2d(597, 30);
+    glVertex2d(597, 35);
+    glColor4d(1, 1, 1, 0.60);
+    glVertex2d(598, 30);
+    glVertex2d(598, 35);
+    glVertex2d(602, 30);
+    glVertex2d(602, 35);
+    glColor4d(0, 0, 0, 0.60);
+    glVertex2d(603, 30);
+    glVertex2d(603, 35);
+    glVertex2d(700, 30);
+    glVertex2d(700, 35);
+    glEnd();
+
+    glBegin(GL_TRIANGLE_STRIP);
+    glColor4d(0, 0, 0, 0.60);
     glVertex2d(765, 100);
     glVertex2d(770, 100);
     glVertex2d(765, 197);
     glVertex2d(770, 197);
-    glColor4d(1, 1, 1, 0.80);
+    glColor4d(1, 1, 1, 0.60);
     glVertex2d(765, 198);
     glVertex2d(770, 198);
     glVertex2d(765, 202);
     glVertex2d(770, 202);
-    glColor4d(0, 0, 0, 0.80);
+    glColor4d(0, 0, 0, 0.60);
     glVertex2d(765, 203);
     glVertex2d(770, 203);
     glVertex2d(765, 497);
     glVertex2d(770, 497);
-    glColor4d(1, 1, 1, 0.80);
+    glColor4d(1, 1, 1, 0.60);
     glVertex2d(765, 498);
     glVertex2d(770, 498);
     glVertex2d(765, 500);
@@ -170,14 +198,14 @@ void graphics_render() {
     glCallList(list);
 
     double thrust(300 - physics_get_thrust() * 25);
-    glColor4d(1, 0, 0, 0.80);
+    glColor4d(1, 0, 0, 0.60);
     glBegin(GL_TRIANGLES);
     glVertex2d(20, thrust - 5);
     glVertex2d(30, thrust);
     glVertex2d(20, thrust + 5);
 
     double flaps(300 - physics_get_flaps() * 25);
-    glColor4d(1, 0, 1, 0.80);
+    glColor4d(1, 0, 1, 0.60);
     glVertex2d(55, flaps - 5);
     glVertex2d(45, flaps);
     glVertex2d(55, flaps + 5);
@@ -185,14 +213,18 @@ void graphics_render() {
     double x, y;
     physics_get_location(&x, &y);
 
+    x = 600 - x / 25;
+    glColor4d(0, 0, 0, 0.60);
+    glVertex2d(x - 5, 20);
+    glVertex2d(x, 30);
+    glVertex2d(x + 5, 20);
+
     y = 500 - 3 * y / 10;
-    glColor4d(0, 0, 0, 0.80);
+    glColor4d(0, 0, 0, 0.60);
     glVertex2d(780, y - 5);
     glVertex2d(770, y);
     glVertex2d(780, y + 5);
     glEnd();
-
-    graphics_print("hello world!", 400, 300, 4, 0.5, 0.5);
 
     SDL_GL_SwapBuffers();
 }

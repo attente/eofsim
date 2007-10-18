@@ -78,13 +78,13 @@ scene::scene() : running(true), ground("../data/ground.png"),
     glBindTexture(GL_TEXTURE_2D, runway);
     glBegin(GL_TRIANGLE_STRIP);
     glTexCoord2d(0, 0);
-    glVertex3d(-12.5, 0, -1000);
+    glVertex3d(-12.5, 0, -282);
     glTexCoord2d(1, 0);
-    glVertex3d( 12.5, 0, -1000);
+    glVertex3d( 12.5, 0, -282);
     glTexCoord2d(0, 1);
-    glVertex3d(-12.5, 0, 282);
+    glVertex3d(-12.5, 0, 1000);
     glTexCoord2d(1, 1);
-    glVertex3d( 12.5, 0, 282);
+    glVertex3d( 12.5, 0, 1000);
     glEnd();
     glBindTexture(GL_TEXTURE_2D, 0);
     glEndList();
