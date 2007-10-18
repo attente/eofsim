@@ -162,9 +162,9 @@ void scene::render() const {
     glClear(GL_DEPTH_BUFFER_BIT);
     glEnable(GL_COLOR_MATERIAL);
     glPushMatrix();
-    glTranslated(30, 0, 600);
+    glTranslated(100, 0, 0);
     glRotated(-90, 1, 0, 0);
-    glRotated(5, 0, 1, 0);
+    glScaled(2.5, 2.5, 2.5);
 
     glColor3d(0.1, 0.1, 0.1);
     tower.render();
