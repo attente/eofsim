@@ -14,6 +14,7 @@
 #include "font.hh"
 #include "scene.hh"
 #include "texture.hh"
+#include "particle.hh"
 
 #include <iostream>
 
@@ -56,18 +57,20 @@ int graphics_initialise() {
             return 2;
     }
 
-    glEnable(GL_BLEND);
-    glEnable(GL_LIGHT0);
-    glEnable(GL_TEXTURE_2D);
-    glEnable(GL_LINE_SMOOTH);
-    glEnable(GL_POINT_SMOOTH);
-    glEnable(GL_POLYGON_SMOOTH);
+    glEnable (GL_BLEND);
+    glEnable (GL_LIGHT0);
+    glEnable (GL_TEXTURE_2D);
+    glEnable (GL_LINE_SMOOTH);
+    glEnable (GL_POINT_SMOOTH);
+    glEnable (GL_POLYGON_SMOOTH);
 
     glClearColor(0.7, 0.9, 1.0, 1.0);
     GLfloat params[] = { 1, 1, 1, 1 };
+
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_BLEND);
     glTexEnvfv(GL_TEXTURE_ENV, GL_TEXTURE_ENV_COLOR, params);
+
     glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
     glHint(GL_POINT_SMOOTH_HINT, GL_NICEST);
     glHint(GL_POLYGON_SMOOTH_HINT, GL_NICEST);
@@ -87,6 +90,8 @@ int graphics_initialise() {
     params[2] = 0.80;
     params[3] = 1.00;
     glLightfv(GL_LIGHT0, GL_SPECULAR, params);
+
+    particle_init ();
 
     glyph = new font("../data/font.fnt");
     sim = new scene();
@@ -204,9 +209,14 @@ void graphics_destroy() {
     delete sim;
 
     glDeleteLists(list, 1);
-    glDisable(GL_TEXTURE_2D);
-    glDisable(GL_LIGHT0);
-    glDisable(GL_BLEND);
+
+    glDisable (GL_POLYGON_SMOOTH);
+    glDisable (GL_POINT_SMOOTH);
+    glDisable (GL_LINE_SMOOTH);
+    glDisable (GL_TEXTURE_2D);
+    glDisable (GL_LIGHT0);
+    glDisable (GL_BLEND);
+
     SDL_Quit();
 }
 

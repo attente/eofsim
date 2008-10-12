@@ -10,7 +10,7 @@ if [ "$1" = "clean" ]; then
   exit
 fi
 
-aclocal-1.9
-automake-1.9 --add-missing --foreign
+aclocal
+automake --add-missing --foreign
 autoconf
 CFLAGS=-ggdb ./configure --enable-maintainer-mode "$@"

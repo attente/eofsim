@@ -11,11 +11,15 @@
 #include "scene.hh"
 #include "sdl.hh"
 #include "camera.hh"
+#include "trail.hh"
 #include "physics.h"
 
 #include <vector>
 #include <cstdlib>
 #include <cmath>
+
+#include <iostream>
+using namespace std;
 
 const int size(100), height(1000);
 static double f(int i, int j);
@@ -255,6 +259,16 @@ void scene::render(int mode) const {
     tower.render();
 
     glPopMatrix();
+
+    static trail tr (500, view.x.x, view.x.y, view.x.z, 0.5, 0.5, 0.5, 1);
+    tr.head.x = view.x.x;
+    tr.head.y = view.x.y - above;
+    tr.head.z = view.x.z - back;
+    tr.head.x.a = 100;
+    tr.head.y.a = 100;
+    tr.head.z.a = 100;
+    tr.update (0.1);
+    tr.render ();
 
     glPushMatrix();
     glTranslated(view.x.x, view.x.y, view.x.z);

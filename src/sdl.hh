@@ -19,6 +19,12 @@ extern "C" {
 #include "SDL_image.h"
 #include "SDL_opengl.h"
 
+void glPointParameteri (GLenum  pname,
+                        GLfloat param);
+
+void glPointParameterfv (GLenum         pname,
+                         const GLfloat *params);
+
 #ifdef __cplusplus
 }
 #endif
