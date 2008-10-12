@@ -33,6 +33,8 @@ particle::render (bool ready) const
       glEnable (GL_POINT_SPRITE);
     }
 
+  glPushMatrix ();
+
   bind_glow ();
   glColor4d (r, g, b, a);
   glVertex3d (x, y, z);
@@ -40,6 +42,8 @@ particle::render (bool ready) const
   bind_bulb ();
   glColor4d (1, 1, 1, a);
   glVertex3d (x, y, z);
+
+  glPopMatrix ();
 
   if (!ready)
     {
@@ -55,9 +59,7 @@ particle_init ()
 
   glTexEnvi (GL_POINT_SPRITE, GL_COORD_REPLACE, GL_TRUE);
 
-  glPointParameteri (GL_POINT_SIZE_MIN, 1);
-  glPointParameteri (GL_POINT_SIZE_MAX, 64);
-  glPointParameteri (GL_POINT_FADE_THRESHOLD_SIZE, 64);
+  glPointParameterf (GL_POINT_FADE_THRESHOLD_SIZE, 1);
   glPointParameterfv (GL_POINT_DISTANCE_ATTENUATION, coeffs);
 
   glow = new texture ("../data/glow.png");

@@ -27,7 +27,8 @@ class trail
            double r,
            double g,
            double b,
-           double a);
+           double a,
+           double radius);
 
     trail &operator= (const trail &t);
 
@@ -41,6 +42,8 @@ class trail
     vector   *tail;
     int       size;
     int       init;
+
+    double    thickness;
 };
 
 #endif

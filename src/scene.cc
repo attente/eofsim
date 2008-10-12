@@ -151,7 +151,8 @@ void scene::stop() {
 }
 
 void scene::render(int mode) const {
-    const double back(15), above(5);
+    const double RIGHT = -10;
+    const double BACK(15), ABOVE(5);
     const double h(2.00);
     camera view;
 
@@ -160,12 +161,14 @@ void scene::render(int mode) const {
     if (!mode) {
         double vx(0), vy(0);
 
-        view.x.y += above;
-        view.x.z += back;
-        view.y.y = -above;
-        view.y.z = -back;
-        view.z.y = back;
-        view.z.z = -above;
+        view.x.x += RIGHT;
+        view.x.y += ABOVE;
+        view.x.z += BACK;
+        view.y.x = -RIGHT;
+        view.y.y = -ABOVE;
+        view.y.z = -BACK;
+        view.z.y = BACK;
+        view.z.z = -ABOVE;
 
         if (view.x.y < h)
             view.x.y = h;
@@ -193,8 +196,8 @@ void scene::render(int mode) const {
             view.x.y -= walky * vx / 1000;
         }
 
-        view.x.y -= above;
-        view.x.z -= back;
+        view.x.y -= ABOVE;
+        view.x.z -= BACK;
 
         GLfloat params[] = { -1.0, 5.0, 5.0, 0.0 };
         glLightfv(GL_LIGHT0, GL_POSITION, params);
@@ -257,13 +260,12 @@ void scene::render(int mode) const {
 
     glColor3d(0.90, 0.90, 0.90);
     tower.render();
-
     glPopMatrix();
 
-    static trail tr (500, view.x.x, view.x.y, view.x.z, 0.5, 0.5, 0.5, 1);
-    tr.head.x = view.x.x;
-    tr.head.y = view.x.y - above;
-    tr.head.z = view.x.z - back;
+    static trail tr (500, view.x.x, view.x.y, view.x.z, 0.5, 0.5, 0.5, 1, 128);
+    tr.head.x = view.x.x - RIGHT;
+    tr.head.y = view.x.y - ABOVE;
+    tr.head.z = view.x.z - BACK;
     tr.head.x.a = 100;
     tr.head.y.a = 100;
     tr.head.z.a = 100;

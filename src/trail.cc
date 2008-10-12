@@ -19,9 +19,11 @@ trail::trail (int    n,
               double r,
               double g,
               double b,
-              double a)
+              double a,
+              double radius)
 : size (n),
-  init (0)
+  init (0),
+  thickness (radius)
 {
   head.x = tracker (x);
   head.y = tracker (y);
@@ -69,7 +71,11 @@ trail::update (double dt)
 void
 trail::render () const
 {
+  glPointParameterf (GL_POINT_SIZE_MIN, thickness);
+  glPointParameterf (GL_POINT_SIZE_MAX, thickness);
+
   glBegin (GL_POINTS);
+  glEnable (GL_POINT_SPRITE);
 
   head.render (true);
 
@@ -91,6 +97,7 @@ trail::render () const
       glVertex3d (tail[j].x, tail[j].y, tail[j].z);
     }
 
+  glDisable (GL_POINT_SPRITE);
   glEnd ();
 }
 
