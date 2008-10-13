@@ -20,17 +20,25 @@ class trail
 
     particle head;
 
-    trail (int    n,
-           double x,
-           double y,
-           double z,
-           double r,
-           double g,
-           double b,
-           double a,
-           double radius);
+    double   thickness;
+
+    trail (const trail &t);
+
+    explicit trail (int    n = 20,
+                    double x = 0,
+                    double y = 0,
+                    double z = 0,
+                    double r = 1,
+                    double g = 1,
+                    double b = 1,
+                    double a = 1,
+                    double radius = 16);
 
     trail &operator= (const trail &t);
+
+    void set_position (double x,
+                       double y,
+                       double z);
 
     void update (double dt);
     void render () const;
@@ -42,8 +50,6 @@ class trail
     vector   *tail;
     int       size;
     int       init;
-
-    double    thickness;
 };
 
 #endif

@@ -12,6 +12,7 @@
 #include "sdl.hh"
 #include "camera.hh"
 #include "trail.hh"
+#include "ring.hh"
 #include "physics.h"
 
 #include <vector>
@@ -151,7 +152,7 @@ void scene::stop() {
 }
 
 void scene::render(int mode) const {
-    const double RIGHT = -10;
+    const double RIGHT = -2;
     const double BACK(15), ABOVE(5);
     const double h(2.00);
     camera view;
@@ -262,15 +263,19 @@ void scene::render(int mode) const {
     tower.render();
     glPopMatrix();
 
-    static trail tr (500, view.x.x, view.x.y, view.x.z, 0.5, 0.5, 0.5, 1, 128);
-    tr.head.x = view.x.x - RIGHT;
-    tr.head.y = view.x.y - ABOVE;
-    tr.head.z = view.x.z - BACK;
-    tr.head.x.a = 100;
-    tr.head.y.a = 100;
-    tr.head.z.a = 100;
-    tr.update (0.1);
-    tr.render ();
+    static trail t (500, view.x.x, view.x.y, view.x.z, 0.5, 0.5, 0.5, 1, 128);
+    t.head.x = view.x.x - RIGHT;
+    t.head.y = view.x.y - ABOVE;
+    t.head.z = view.x.z - BACK;
+    t.head.x.a = 100;
+    t.head.y.a = 100;
+    t.head.z.a = 100;
+    t.update (0.1);
+    t.render ();
+
+    static ring r (5000, 2000);
+    r.update (0.1);
+    r.render (view.x.z);
 
     glPushMatrix();
     glTranslated(view.x.x, view.x.y, view.x.z);

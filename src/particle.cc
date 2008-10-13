@@ -33,8 +33,6 @@ particle::render (bool ready) const
       glEnable (GL_POINT_SPRITE);
     }
 
-  glPushMatrix ();
-
   bind_glow ();
   glColor4d (r, g, b, a);
   glVertex3d (x, y, z);
@@ -42,8 +40,6 @@ particle::render (bool ready) const
   bind_bulb ();
   glColor4d (1, 1, 1, a);
   glVertex3d (x, y, z);
-
-  glPopMatrix ();
 
   if (!ready)
     {

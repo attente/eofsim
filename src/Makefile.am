@@ -4,7 +4,7 @@ CLEANFILES = conversion.c
 
 core = tracker.cc vector.cc
 physics = plane.cc physics.cc timer.cc
-graphics = camera.cc font.cc graphics.cc mesh.cc particle.cc scene.cc trail.cc texture.cc
+graphics = camera.cc font.cc graphics.cc mesh.cc particle.cc ring.cc scene.cc trail.cc texture.cc
 
 AM_CFLAGS = -Wall -Wwrite-strings -Wmissing-prototypes $(sdl_CFLAGS)
 AM_CXXFLAGS = -Wall -Wwrite-strings $(sdl_CFLAGS)

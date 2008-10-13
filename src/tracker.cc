@@ -62,6 +62,9 @@ tracker::update (double dt)
       y += (v + dv / 2) * dt;
       v += dv;
     }
+
+  if (-EPS <= v && v <= EPS && x - y <= EPS && y - x <= EPS)
+    y = x;
 }
 
 tracker::operator double () const

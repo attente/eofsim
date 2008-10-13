@@ -12,6 +12,18 @@
 
 #include "sdl.hh"
 
+trail::trail (const trail &t)
+: head (t.head),
+  thickness (t.thickness),
+  size (t.size),
+  init (t.init)
+{
+  tail = new vector[size];
+
+  for (int i = 0; i < size; i++)
+    tail[i] = t.tail[i];
+}
+
 trail::trail (int    n,
               double x,
               double y,
@@ -21,9 +33,9 @@ trail::trail (int    n,
               double b,
               double a,
               double radius)
-: size (n),
-  init (0),
-  thickness (radius)
+: thickness (radius),
+  size (n),
+  init (0)
 {
   head.x = tracker (x);
   head.y = tracker (y);
@@ -61,6 +73,21 @@ trail::operator= (const trail &t)
 }
 
 void
+trail::set_position (double x,
+                     double y,
+                     double z)
+{
+  vector pos (x, y, z);
+
+  head.x = tracker (x);
+  head.y = tracker (y);
+  head.z = tracker (z);
+
+  for (int i = 0; i < size; i++)
+    tail[i] = pos;
+}
+
+void
 trail::update (double dt)
 {
   head.update (dt);
@@ -76,6 +103,7 @@ trail::render () const
 
   glBegin (GL_POINTS);
   glEnable (GL_POINT_SPRITE);
+  glPointSize (1);
 
   head.render (true);
 

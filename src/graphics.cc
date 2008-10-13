@@ -208,6 +208,8 @@ void graphics_destroy() {
     delete glyph;
     delete sim;
 
+    particle_exit ();
+
     glDeleteLists(list, 1);
 
     glDisable (GL_POLYGON_SMOOTH);
