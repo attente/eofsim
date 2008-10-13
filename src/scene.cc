@@ -152,7 +152,7 @@ void scene::stop() {
 }
 
 void scene::render(int mode) const {
-    const double RIGHT = -2;
+    const double RIGHT = 0;
     const double BACK(15), ABOVE(5);
     const double h(2.00);
     camera view;
@@ -273,9 +273,17 @@ void scene::render(int mode) const {
     t.update (0.1);
     t.render ();
 
-    static ring r (5000, 2000);
-    r.update (0.1);
-    r.render (view.x.z);
+    static ring r1 (5000, 2000);
+    r1.update (0.1);
+    r1.render (view.x.z);
+
+    static ring r2 (6000, 1750);
+    r2.update (0.1);
+    r2.render (view.x.z);
+
+    static ring r3 (7000, 1500);
+    r3.update (0.1);
+    r3.render (view.x.z);
 
     glPushMatrix();
     glTranslated(view.x.x, view.x.y, view.x.z);
