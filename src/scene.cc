@@ -152,7 +152,7 @@ void scene::stop() {
 }
 
 void scene::render(int mode) const {
-    const double RIGHT = 0;
+    const double RIGHT = -10;
     const double BACK(15), ABOVE(5);
     const double h(2.00);
     camera view;
@@ -224,7 +224,7 @@ void scene::render(int mode) const {
 
         glMatrixMode (GL_PROJECTION);
         glLoadIdentity ();
-        glOrtho (-10000, 10000, -2000, 2000, -10000, 10000);
+        glOrtho (-8000, 8000, -6000, 6000, -10000, 10000);
 
         view.x.x = 1000;
         view.x.y = 2000;
@@ -263,7 +263,7 @@ void scene::render(int mode) const {
     view.x.x = 0;
     physics_get_location(&view.x.z, &view.x.y);
 
-    if (view.x.y < 100) {
+    if (mode != 2 && view.x.y < 100) {
         double s((view.x.y - h) / 100);
 
         glPushMatrix();
@@ -295,6 +295,12 @@ void scene::render(int mode) const {
     t.head.y.a = 100;
     t.head.z.a = 100;
     t.update (0.1);
+
+    if (mode == 2)
+      t.thickness = 8;
+    else
+      t.thickness = 256;
+
     t.render ();
 
     if (rings == NULL || physics_get_serial () != serial)
@@ -308,10 +314,10 @@ void scene::render(int mode) const {
                                  physics_get_rings_vert ()[i]);
       }
 
-    for (int i = 0; i < physics_get_n_rings (); i++)
+    for (int i = physics_get_n_rings () - 1; i >= 0; i--)
       {
         rings[i].update (0.1);
-        rings[i].render (42);
+        rings[i].render (view.x.z, mode);
       }
 
     glPushMatrix();

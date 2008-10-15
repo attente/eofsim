@@ -227,46 +227,54 @@ void graphics_render() {
 
     sim->render(mode);
 
-    glCallList(list);
+    if (mode != 2)
+      {
+        glCallList(list);
 
-    double thrust(300 - physics_get_thrust() * 25);
-    glColor4d(1, 0, 0, 0.60);
-    glBegin(GL_TRIANGLES);
-    glVertex2d(20, thrust - 5);
-    glVertex2d(30, thrust);
-    glVertex2d(20, thrust + 5);
+        double thrust(300 - physics_get_thrust() * 25);
+        glColor4d(1, 0, 0, 0.60);
+        glBegin(GL_TRIANGLES);
+        glVertex2d(20, thrust - 5);
+        glVertex2d(30, thrust);
+        glVertex2d(20, thrust + 5);
 
-    double flaps(300 - physics_get_flaps() * 25);
-    glColor4d(1, 0, 1, 0.60);
-    glVertex2d(55, flaps - 5);
-    glVertex2d(45, flaps);
-    glVertex2d(55, flaps + 5);
+        double flaps(300 - physics_get_flaps() * 25);
+        glColor4d(1, 0, 1, 0.60);
+        glVertex2d(55, flaps - 5);
+        glVertex2d(45, flaps);
+        glVertex2d(55, flaps + 5);
 
-    double x, y;
-    physics_get_location(&x, &y);
+        double x, y;
+        physics_get_location(&x, &y);
 
-    x = 600 - x / 25;
-    glColor4d(0, 0, 0, 0.60);
-    glVertex2d(x - 5, 20);
-    glVertex2d(x, 30);
-    glVertex2d(x + 5, 20);
+        x = 600 - x / 25;
+        glColor4d(0, 0, 0, 0.60);
+        glVertex2d(x - 5, 20);
+        glVertex2d(x, 30);
+        glVertex2d(x + 5, 20);
 
-    y = 500 - 3 * y / 10;
-    glColor4d(0, 0, 0, 0.60);
-    glVertex2d(780, y - 5);
-    glVertex2d(770, y);
-    glVertex2d(780, y + 5);
-    glEnd();
+        y = 500 - 3 * y / 10;
+        glColor4d(0, 0, 0, 0.60);
+        glVertex2d(780, y - 5);
+        glVertex2d(770, y);
+        glVertex2d(780, y + 5);
+        glEnd();
 
-    sprintf(buffer, "%.1lf", physics_get_score());
-    graphics_print(buffer, 700, 30, 2, 1, 0);
-    graphics_print(physics_get_message(), 400, 500, 2, 0.5, 1);
+        sprintf(buffer, "%.1lf", physics_get_score());
+        graphics_print(buffer, 700, 30, 2, 1, 0);
+        graphics_print(physics_get_message(), 400, 500, 2, 0.5, 1);
+      }
 
     SDL_GL_SwapBuffers();
 }
 
 void graphics_mode(int m) {
     mode = m;
+}
+
+int graphics_get_mode (void)
+{
+  return mode;
 }
 
 void graphics_stop() {
@@ -280,4 +288,8 @@ bool graphics_loop() {
 void graphics_print(const char *s, double x, double y,
                          double c, double h, double v) {
     glyph->print(s, x, y, c, h, v);
+}
+
+void graphics_fade ()
+{
 }

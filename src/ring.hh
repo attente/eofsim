@@ -29,7 +29,7 @@ class ring
                        double vertical);
 
     void update (double dt);
-    void render (double x) const;
+    void render (double x, int mode) const;
 
     ~ring ();
 

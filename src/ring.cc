@@ -122,11 +122,15 @@ ring::update (double dt)
 }
 
 void
-ring::render (double x) const
+ring::render (double x, int mode) const
 {
   for (int i = 0; i < TRAILS; i++)
     {
-      trails[i].thickness = 8; // 256.0 / (1.0 + std::fabs (x - z) * 0.025);
+      if (mode == 2)
+        trails[i].thickness = 8;
+      else
+        trails[i].thickness = 256.0 / (1.0 + std::fabs (x - z) * 0.025);
+
       trails[i].render ();
     }
 }

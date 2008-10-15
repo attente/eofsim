@@ -20,6 +20,8 @@ void graphics_destroy(void);
 void graphics_render(void);
 void graphics_mode(int m);
 
+int graphics_get_mode (void);
+
 void graphics_stop(void);
 bool graphics_loop(void);
 double graphics_delta(void);
