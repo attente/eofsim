@@ -157,6 +157,8 @@ void scene::render(int mode) const {
     const double h(2.00);
     camera view;
 
+    glClearColor(0.7, 0.9, 1.0, 1.0);
+
     physics_get_location(&view.x.z, &view.x.y);
 
     if (!mode) {
@@ -216,6 +218,28 @@ void scene::render(int mode) const {
         GLfloat params[] = { -1.0, 5.0, -2.0, 0.0 };
         glLightfv(GL_LIGHT0, GL_POSITION, params);
     }
+    else if (mode == 2)
+      {
+        glClearColor (0, 0, 0, 1);
+
+        glMatrixMode (GL_PROJECTION);
+        glLoadIdentity ();
+        glOrtho (-9000, 1000, 0, 2000, -10000, 10000);
+
+        view.x.x = 1000;
+        view.x.y = 1000;
+        view.x.z = 4000;
+        view.y.x = -1;
+        view.y.y = 0;
+        view.y.z = 0;
+        view.z.x = 0;
+        view.z.y = 1;
+        view.z.z = 0;
+        view.position ();
+
+        GLfloat params[] = { -1.0, 5.0, -2.0, 0.0 };
+        glLightfv(GL_LIGHT0, GL_POSITION, params);
+      }
 
     glPushMatrix();
     glTranslated(view.x.x, 0, view.x.z);
@@ -263,7 +287,7 @@ void scene::render(int mode) const {
     tower.render();
     glPopMatrix();
 
-    static trail t (500, view.x.x, view.x.y, view.x.z, 0.5, 0.5, 0.5, 1, 128);
+    static trail t (1000, view.x.x, view.x.y, view.x.z, 0.5, 0.5, 0.5, 1, 16);
     t.head.x = view.x.x - RIGHT;
     t.head.y = view.x.y - ABOVE;
     t.head.z = view.x.z - BACK;
