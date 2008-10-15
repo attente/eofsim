@@ -49,7 +49,7 @@ reset_the_physics (bool regenerate)
     start = 7000 + (rand () % 7001);
   }
 
-  physics_initialise (start, 1000, -200, 0);
+  physics_initialise (start, 1000, -200, 0, 1);
   physics_set_thrust (0);
   physics_set_flaps (0);
 }

@@ -20,7 +20,7 @@ int main(int argc, char **argv) {
 
     graphics_mode (0);
 
-    physics_initialise (10000, 1000, -250, 0);
+    physics_initialise (10000, 1000, -250, 0, 1);
     physics_set_thrust(0);
     physics_set_flaps(0);
 

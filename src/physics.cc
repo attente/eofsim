@@ -14,13 +14,28 @@
 #include <cmath>
 
 static plane *obj;
+static int on_ring;
+static double score;
+static double rings_vert[8];
+static double rings_horiz[8];
 
 void physics_initialise(double  x,
                         double  y,
                         double dx,
-                        double dy) {
+                        double dy,
+                        int    random_seed) {
+  int i;
+
   if (obj)
     delete obj;
+
+  score = 0.;
+  on_ring = 0;
+
+  srand (random_seed);
+  for (i = 0; i < 8; i++)
+    rings_horiz[i] = 9000 - 1000 * i,
+    rings_vert[i] = rand() % 401 + 800;
 
   obj = new plane(x, y, dx, dy);
   obj->start();
@@ -67,14 +82,31 @@ void physics_set_flaps(int value) {
     obj->wings(value);
 }
 
-bool physics_update() {
-    return obj->update();
+bool
+physics_update()
+{
+  bool status;
+
+  if (on_ring == 8)
+    return false;
+
+  status = obj->update();
+
+  if (obj->position().z < rings_horiz[on_ring])
+    {
+      /* score */
+      score += 100;
+
+      on_ring++;
+    }
+
+  return status;
 }
 
 double
 physics_get_score (void)
 {
-  return obj->get_score();
+  return score;
 }
 
 const char *
@@ -104,15 +136,13 @@ physics_is_shaking (void)
 const double *
 physics_get_rings_horiz (void)
 {
-  static double tmp[] = { 9000, 8000, 7000, 6000, 5000, 4000, 3000, 2000 };
-  return tmp;
+  return rings_horiz;
 }
 
 const double *
 physics_get_rings_vert (void)
 {
-  static double tmp[] = { 10000, 10000, 10000, 10000, 10000, 10000, 10000, 10000 };
-  return tmp;
+  return rings_vert;
 }
 
 int

@@ -20,7 +20,8 @@ extern "C" {
 void physics_initialise(double  x,
                         double  y,
                         double dx,
-                        double dy);
+                        double dy,
+                        int seed);
 void physics_destroy(void);
 
 double physics_get_degrees(void);
