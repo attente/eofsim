@@ -100,3 +100,29 @@ physics_is_shaking (void)
 {
   return obj->is_shaking ();
 }
+
+const double *
+physics_get_rings_horiz (void)
+{
+  static double tmp[] = { 9000, 8000, 7000, 6000, 5000, 4000, 3000, 2000 };
+  return tmp;
+}
+
+const double *
+physics_get_rings_vert (void)
+{
+  static double tmp[] = { 10000, 10000, 10000, 10000, 10000, 10000, 10000, 10000 };
+  return tmp;
+}
+
+int
+physics_get_n_rings (void)
+{
+  return 8;
+}
+
+int
+physics_get_serial (void)
+{
+  return 0;
+}

@@ -14,10 +14,15 @@
 #include <netinet/in.h>
 #include <stdbool.h>
 
+#define NET_RINGS 8
+
 struct net_state
 {
   double x, y, dx, dy;
   int thrust, flaps;
+  double rings_horiz[NET_RINGS];
+  double rings_vert[NET_RINGS];
+  int serial;
   double score;
 };
 

@@ -72,3 +72,27 @@ physics_get_message (void)
 {
   return NULL;
 }
+
+const double *
+physics_get_rings_horiz (void)
+{
+  return state.rings_horiz;
+}
+
+const double *
+physics_get_rings_vert (void)
+{
+  return state.rings_vert;
+}
+
+int
+physics_get_n_rings (void)
+{
+  return NET_RINGS;
+}
+
+int
+physics_get_serial (void)
+{
+  return state.serial;
+}

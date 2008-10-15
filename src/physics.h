@@ -43,6 +43,11 @@ void physics_set_message (const char *message);
 void physics_landing_gear (void);
 bool physics_is_shaking (void);
 
+int physics_get_n_rings (void);
+const double *physics_get_rings_horiz (void);
+const double *physics_get_rings_vert (void);
+int physics_get_serial (void);
+
 #ifdef __cplusplus
 }
 #endif
