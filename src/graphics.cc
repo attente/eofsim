@@ -20,6 +20,7 @@
 
 static GLuint list;
 static font *glyph;
+static font *white;
 static scene *sim;
 static int mode;
 
@@ -94,6 +95,8 @@ int graphics_initialise() {
     particle_init ();
 
     glyph = new font("../data/font.fnt");
+    white = new font("../data/whitefont.fnt");
+
     sim = new scene();
     list = glGenLists(1);
 
@@ -197,14 +200,13 @@ int graphics_initialise() {
     glVertex2d(770, 500);
     glEnd();
 
-    graphics_print("Current Score:", 100, 30, 2, 0, 0);
-
     glEndList();
     mode = 0;
     return 0;
 }
 
 void graphics_destroy() {
+    delete white;
     delete glyph;
     delete sim;
 
@@ -259,11 +261,13 @@ void graphics_render() {
         glVertex2d(770, y);
         glVertex2d(780, y + 5);
         glEnd();
-
-        sprintf(buffer, "%.1lf", physics_get_score());
-        graphics_print(buffer, 700, 30, 2, 1, 0);
-        graphics_print(physics_get_message(), 400, 500, 2, 0.5, 1);
       }
+
+    graphics_print("Current Score:", 100, 30, 2, 0, 0);
+
+    sprintf(buffer, "%.1lf", physics_get_score());
+    graphics_print(buffer, 700, 30, 2, 1, 0);
+    graphics_print(physics_get_message(), 400, 500, 2, 0.5, 1);
 
     SDL_GL_SwapBuffers();
 }
@@ -287,7 +291,7 @@ bool graphics_loop() {
 
 void graphics_print(const char *s, double x, double y,
                          double c, double h, double v) {
-    glyph->print(s, x, y, c, h, v);
+  (mode == 2 ? white : glyph)->print(s, x, y, c, h, v);
 }
 
 void graphics_fade ()
