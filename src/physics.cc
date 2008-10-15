@@ -11,6 +11,7 @@
 #include "physics.h"
 #include "plane.hh"
 
+#include <sys/time.h>
 #include <cmath>
 
 static plane *obj;
@@ -18,6 +19,17 @@ static int on_ring;
 static double score;
 static double rings_vert[8];
 static double rings_horiz[8];
+static double start_time;
+static int serial;
+
+double now (void)
+{
+  struct timeval tv;
+
+  gettimeofday (&tv, NULL);
+
+  return tv.tv_sec + tv.tv_usec / 1000000.;
+}
 
 void physics_initialise(double  x,
                         double  y,
@@ -36,6 +48,8 @@ void physics_initialise(double  x,
   for (i = 0; i < 8; i++)
     rings_horiz[i] = 9000 - 1000 * i,
     rings_vert[i] = rand() % 401 + 800;
+  start_time = now ();
+  serial = start_time * 10;
 
   obj = new plane(x, y, dx, dy);
   obj->start();
@@ -94,9 +108,25 @@ physics_update()
 
   if (obj->position().z < rings_horiz[on_ring])
     {
-      /* score */
-      score += 100;
+      static char message[100];
+      double delta;
+      double pts;
 
+      delta = fabs (obj->position().y - rings_vert[on_ring]);
+      if (delta > 20)
+        pts = 1000 - 10 * delta;
+      else
+        pts = 1000;
+
+      if (pts > 0)
+        {
+          sprintf (message, "%.1fm -- +%.1fpoints", delta, pts);
+          score += pts;
+        }
+      else
+        sprintf (message, "%.1fm -- no points", delta);
+
+      obj->set_message (message, 100);
       on_ring++;
     }
 
@@ -154,5 +184,11 @@ physics_get_n_rings (void)
 int
 physics_get_serial (void)
 {
-  return 0;
+  return serial;
+}
+
+double
+physics_get_time (void)
+{
+  return now() - start_time;
 }

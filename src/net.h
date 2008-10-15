@@ -23,6 +23,7 @@ struct net_state
   double rings_horiz[NET_RINGS];
   double rings_vert[NET_RINGS];
   int serial;
+  double time;
   double score;
 };
 

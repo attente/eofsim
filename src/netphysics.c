@@ -96,3 +96,9 @@ physics_get_serial (void)
 {
   return state.serial;
 }
+
+double
+physics_get_time (void)
+{
+  return state.time;
+}

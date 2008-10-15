@@ -33,6 +33,7 @@ netsend_packet (int fd, const net_addr *addr)
   memcpy (state.rings_horiz, physics_get_rings_horiz(), sizeof state.rings_horiz);
   memcpy (state.rings_vert, physics_get_rings_vert(), sizeof state.rings_vert);
   state.serial = physics_get_serial ();
+  state.time = physics_get_time ();
 
   return sendto (fd, &state, sizeof state, 0, (struct sockaddr *) addr, sizeof (struct sockaddr_in)) == sizeof state;
 }
