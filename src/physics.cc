@@ -111,7 +111,7 @@ physics_get_rings_horiz (void)
 const double *
 physics_get_rings_vert (void)
 {
-  static double tmp[] = { 10000, 10000, 10000, 10000, 10000, 10000, 10000, 10000 };
+  static double tmp[] = { 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000 };
   return tmp;
 }
 

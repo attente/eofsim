@@ -22,8 +22,11 @@ class ring
 
     ring (const ring &cp);
 
-    ring (double horizontal,
-          double vertical);
+    ring (double horizontal = 0,
+          double vertical = 0);
+
+    void set_position (double horizontal,
+                       double vertical);
 
     void update (double dt);
     void render (double x) const;

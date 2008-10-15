@@ -29,7 +29,7 @@ scene::scene() : running(true), ground("../data/ground.png"),
                  runway("../data/runway.png"), shadow("../data/shadow.png"),
                  stills("../data/static.png"), list(glGenLists(4)),
                  tower("../data/tower.raw"), obj("../data/biplane.raw"),
-                 walkx(0), walky(0) {
+                 rings (NULL), walkx(0), walky(0) {
     const double limit(4E4);
 
     glNewList(list, GL_COMPILE);
@@ -224,11 +224,11 @@ void scene::render(int mode) const {
 
         glMatrixMode (GL_PROJECTION);
         glLoadIdentity ();
-        glOrtho (-9000, 1000, 0, 2000, -10000, 10000);
+        glOrtho (-10000, 10000, -2000, 2000, -10000, 10000);
 
         view.x.x = 1000;
-        view.x.y = 1000;
-        view.x.z = 4000;
+        view.x.y = 2000;
+        view.x.z = 5000;
         view.y.x = -1;
         view.y.y = 0;
         view.y.z = 0;
@@ -287,7 +287,7 @@ void scene::render(int mode) const {
     tower.render();
     glPopMatrix();
 
-    static trail t (1000, view.x.x, view.x.y, view.x.z, 0.5, 0.5, 0.5, 1, 16);
+    static trail t (1000, view.x.x, view.x.y, view.x.z, 0.5, 0.5, 0.5, 1, 8);
     t.head.x = view.x.x - RIGHT;
     t.head.y = view.x.y - ABOVE;
     t.head.z = view.x.z - BACK;
@@ -297,17 +297,22 @@ void scene::render(int mode) const {
     t.update (0.1);
     t.render ();
 
-    static ring r1 (5000, 2000);
-    r1.update (0.1);
-    r1.render (view.x.z);
+    if (rings == NULL || physics_get_serial () != serial)
+      {
+        delete [] rings;
+        serial = physics_get_serial ();
+        rings = new ring[physics_get_n_rings ()];
 
-    static ring r2 (6000, 1750);
-    r2.update (0.1);
-    r2.render (view.x.z);
+        for (int i = 0; i < physics_get_n_rings (); i++)
+          rings[i].set_position (physics_get_rings_horiz ()[i],
+                                 physics_get_rings_vert ()[i]);
+      }
 
-    static ring r3 (7000, 1500);
-    r3.update (0.1);
-    r3.render (view.x.z);
+    for (int i = 0; i < physics_get_n_rings (); i++)
+      {
+        rings[i].update (0.1);
+        rings[i].render (42);
+      }
 
     glPushMatrix();
     glTranslated(view.x.x, view.x.y, view.x.z);

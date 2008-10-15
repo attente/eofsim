@@ -82,6 +82,21 @@ ring::ring (double horizontal,
 }
 
 void
+ring::set_position (double horizontal,
+                    double vertical)
+{
+  y.x = y.y = vertical;
+  z.x = z.y = horizontal;
+
+  for (int i = 0; i < TRAILS; i++)
+    trails[i].set_position (0 + (r + (i & 1)) * NORMAL_RADIUS *
+                              std::cos (2 * M_PI * i / TRAILS),
+                            y + (r + (i & 1)) * NORMAL_RADIUS *
+                              std::sin (2 * M_PI * i / TRAILS),
+                            z);
+}
+
+void
 ring::update (double dt)
 {
   if (a.x - a.y >= 0 && a.x - a.y <= EPS)
@@ -111,7 +126,7 @@ ring::render (double x) const
 {
   for (int i = 0; i < TRAILS; i++)
     {
-      trails[i].thickness = 256.0 / (1.0 + std::fabs (x - z) * 0.025);
+      trails[i].thickness = 8; // 256.0 / (1.0 + std::fabs (x - z) * 0.025);
       trails[i].render ();
     }
 }

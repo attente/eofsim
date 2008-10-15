@@ -14,6 +14,9 @@
 #include "sdl.hh"
 #include "mesh.hh"
 #include "texture.hh"
+#include "ring.hh"
+
+const int STARS = 100;
 
 class scene {
 public:
@@ -34,8 +37,11 @@ private:
     GLuint list;
     mesh tower;
     mesh obj;
+    particle stars[STARS];
 
+    mutable ring *rings;
     mutable int walkx, walky;
+    mutable int serial;
 };
 
 #endif
