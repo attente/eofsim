@@ -29,6 +29,9 @@ particle::render (bool ready) const
 {
   if (!ready)
     {
+      glPointParameterf (GL_POINT_SIZE_MIN, size);
+      glPointParameterf (GL_POINT_SIZE_MAX, size);
+
       glBegin (GL_POINTS);
       glEnable (GL_POINT_SPRITE);
     }

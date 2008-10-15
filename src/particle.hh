@@ -17,6 +17,7 @@ class particle
 {
   public:
 
+    double size;
     tracker x, y, z;
     double r, g, b, a;
 

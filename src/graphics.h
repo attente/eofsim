@@ -27,6 +27,8 @@ double graphics_delta(void);
 void graphics_print(const char *s, double x, double y,
                          double c, double h, double v);
 
+void graphics_fade (void);
+
 #ifdef __cplusplus
 }
 #endif
