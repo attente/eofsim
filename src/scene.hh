@@ -30,6 +30,7 @@ public:
 private:
     bool running;
 
+    texture backdrop;
     texture ground;
     texture runway;
     texture shadow;

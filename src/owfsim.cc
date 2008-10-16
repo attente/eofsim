@@ -68,8 +68,12 @@ int main(int argc, char **argv) {
         int wait(static_cast< int >(clock.delta()));
         if (wait < delay) SDL_Delay(delay - wait);
 
-        if (!physics_update())
-            graphics_render();
+        graphics_render (0);
+        if (physics_update ())
+          {
+            graphics_fade ();
+            break;
+          }
     }
 
     graphics_destroy();

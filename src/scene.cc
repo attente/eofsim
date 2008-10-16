@@ -25,11 +25,12 @@ using namespace std;
 const int size(100), height(1000);
 static double f(int i, int j);
 
-scene::scene() : running(true), ground("../data/ground.png"),
-                 runway("../data/runway.png"), shadow("../data/shadow.png"),
-                 stills("../data/static.png"), list(glGenLists(4)),
-                 tower("../data/tower.raw"), obj("../data/biplane.raw"),
-                 rings (NULL), walkx(0), walky(0) {
+scene::scene() : running(true), backdrop ("../data/backdrop.png"),
+                 ground("../data/ground.png"), runway("../data/runway.png"),
+                 shadow("../data/shadow.png"), stills("../data/static.png"),
+                 list(glGenLists(4)), tower("../data/tower.raw"),
+                 obj("../data/biplane.raw"), rings (NULL),
+                 walkx(0), walky(0) {
     const double limit(4E4);
 
     glNewList(list, GL_COMPILE);
@@ -170,8 +171,9 @@ void scene::render(int mode) const {
         view.y.x = -RIGHT;
         view.y.y = -ABOVE;
         view.y.z = -BACK;
-        view.z.y = BACK;
-        view.z.z = -ABOVE;
+        view.z.x = -RIGHT;
+        view.z.y = 1;
+        view.z.z = -BACK;
 
         if (view.x.y < h)
             view.x.y = h;
@@ -236,6 +238,26 @@ void scene::render(int mode) const {
         view.z.y = 1;
         view.z.z = 0;
         view.position ();
+
+        glPushMatrix ();
+        glLoadIdentity ();
+
+/*
+        glBindTexture (GL_TEXTURE_2D, backdrop);
+        glBegin (GL_TRIANGLE_STRIP);
+        glColor4d (1, 1, 1, 1);
+        glTexCoord2d (0, 0);
+        glVertex2d (-8000, -6000);
+        glTexCoord2d (0, 1);
+        glVertex2d (-8000,  6000);
+        glTexCoord2d (1, 0);
+        glVertex2d ( 8000, -6000);
+        glTexCoord2d (1, 1);
+        glVertex2d ( 8000,  6000);
+        glEnd ();
+
+        glPopMatrix ();
+*/
 
         GLfloat params[] = { -1.0, 5.0, -2.0, 0.0 };
         glLightfv(GL_LIGHT0, GL_POSITION, params);

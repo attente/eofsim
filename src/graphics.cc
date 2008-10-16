@@ -224,12 +224,12 @@ void graphics_destroy() {
     SDL_Quit();
 }
 
-void graphics_render() {
+void graphics_render (double alpha) {
     char buffer[80];
 
     sim->render(mode);
 
-    if (true)//mode != 2)
+    if (mode != 2)
       {
         glCallList(list);
 
@@ -262,6 +262,14 @@ void graphics_render() {
         glVertex2d(780, y + 5);
         glEnd();
       }
+    else
+      {
+        glMatrixMode(GL_PROJECTION);
+        glLoadIdentity();
+        gluOrtho2D(0, 800, 600, 0);
+        glMatrixMode(GL_MODELVIEW);
+        glLoadIdentity();
+      }
 
     if (mode == 2)
       {
@@ -280,7 +288,34 @@ void graphics_render() {
         graphics_print (buffer, 700, 500, 2, 1, 1);
       }
     else
-      graphics_print(physics_get_message(), 400, 500, 2, 0.5, 1);
+      {
+        glMatrixMode (GL_PROJECTION);
+        glLoadIdentity ();
+        gluOrtho2D (-1, 1, -1, 1);
+
+        glMatrixMode (GL_MODELVIEW);
+        glPushMatrix ();
+        glLoadIdentity ();
+
+        glBindTexture (GL_TEXTURE_2D, 0);
+        glBegin (GL_TRIANGLE_STRIP);
+        glColor4d (0.75, 0.6, 0.3, alpha);
+        glVertex2d (-1, -1);
+        glVertex2d (-1,  1);
+        glVertex2d ( 1, -1);
+        glVertex2d ( 1,  1);
+        glEnd ();
+
+        glPopMatrix ();
+
+        glMatrixMode (GL_PROJECTION);
+        glLoadIdentity ();
+        gluOrtho2D (0, 800, 600, 0);
+        glMatrixMode (GL_MODELVIEW);
+        glLoadIdentity ();
+
+        graphics_print(physics_get_message(), 400, 500, 2, 0.5, 1);
+      }
 
     SDL_GL_SwapBuffers ();
 }
@@ -309,4 +344,27 @@ void graphics_print(const char *s, double x, double y,
 
 void graphics_fade ()
 {
+  const int STEPS = 300;
+
+  for (int i = 0; i < STEPS; i++)
+    {
+      SDL_Event event;
+
+      if (SDL_PollEvent (&event))
+        {
+          if (event.type == SDL_QUIT
+              || (event.type == SDL_KEYDOWN
+                  && event.key.keysym.sym == SDLK_ESCAPE))
+            exit (0);
+
+          if (event.type == SDL_KEYDOWN
+              && event.key.keysym.sym == SDLK_SPACE)
+            return;
+        }
+
+      graphics_render (0.75 * i / STEPS);
+
+      if (i == STEPS - 1)
+        i--;
+    }
 }

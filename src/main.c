@@ -115,7 +115,7 @@ main (int argc, char **argv)
     reset_the_physics (true);
     physics_set_message ("READY");
     publish_the_physics (serial, net, &remote);
-    graphics_render ();
+    graphics_render (0);
 
     while (!serial_ready (serial))
       check_sdl ();
@@ -129,7 +129,7 @@ main (int argc, char **argv)
       ended = physics_update ();
       publish_the_physics (serial, net, &remote);
       check_sdl ();
-      graphics_render ();
+      graphics_render (0);
     }
 
     while (check_sdl () != ' ')
