@@ -21,6 +21,8 @@ static double rings_vert[8];
 static double rings_horiz[8];
 static double start_time;
 static int serial;
+static double time_bonus;
+static double time_locked;
 
 double now (void)
 {
@@ -50,6 +52,8 @@ void physics_initialise(double  x,
     rings_vert[i] = rand() % 401 + 800;
   start_time = now ();
   serial = start_time * 10;
+  time_locked = 0;
+  time_bonus = 0;
 
   obj = new plane(x, y, dx, dy);
   obj->start();
@@ -102,7 +106,7 @@ physics_update()
   bool status;
 
   if (on_ring == 8)
-    return false;
+    return true;
 
   status = obj->update();
 
@@ -120,14 +124,25 @@ physics_update()
 
       if (pts > 0)
         {
-          sprintf (message, "%.1fm -- +%.1fpoints", delta, pts);
+          sprintf (message, "%.1fm = +%.1fpoints", delta, pts);
           score += pts;
         }
       else
-        sprintf (message, "%.1fm -- no points", delta);
+        sprintf (message, "%.1fm = no points", delta);
 
       obj->set_message (message, 100);
       on_ring++;
+
+      if (on_ring == 8)
+        {
+          time_locked = now() - start_time;
+          time_bonus = (60. - time_locked) * 20;
+
+          if (time_bonus < 0.01)
+            time_bonus = 0;
+
+          score += time_bonus;
+        }
     }
 
   return status;
@@ -190,6 +205,9 @@ physics_get_serial (void)
 double
 physics_get_time (void)
 {
+  if (time_locked)
+    return time_locked;
+
   return now() - start_time;
 }
 
