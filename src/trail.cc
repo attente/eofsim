@@ -11,6 +11,7 @@
 #include "trail.hh"
 
 #include "sdl.hh"
+#include "graphics.h"
 
 trail::trail (const trail &t)
 : head (t.head),
@@ -98,12 +99,19 @@ trail::update (double dt)
 void
 trail::render () const
 {
-  glPointParameterf (GL_POINT_SIZE_MIN, thickness);
-  glPointParameterf (GL_POINT_SIZE_MAX, thickness);
+  if (graphics_get_mode () != 2)
+    {
+      glPointParameterf (GL_POINT_SIZE_MIN, thickness);
+      glPointParameterf (GL_POINT_SIZE_MAX, thickness);
 
-  glBegin (GL_POINTS);
-  glEnable (GL_POINT_SPRITE);
-  glPointSize (1);
+      glEnable (GL_POINT_SMOOTH);
+      glEnable (GL_POINT_SPRITE);
+
+      glBegin (GL_POINTS);
+      glPointSize (1);
+    }
+  else
+    glBegin (GL_QUADS);
 
   head.render (true);
 
@@ -111,21 +119,59 @@ trail::render () const
     {
       int j = (init + i) % size;
 
+      double x = tail[j].x;
+      double y = tail[j].y;
+      double z = tail[j].z;
+      double sz = thickness;
+
       bind_glow ();
       glColor4d (head.r, head.g, head.b, head.a * i / size);
-      glVertex3d (tail[j].x, tail[j].y, tail[j].z);
+
+      if (graphics_get_mode () != 2)
+        glVertex3d (x, y, z);
+      else
+        {
+          glTexCoord2d (0, 0);
+          glVertex3d (x, y - sz, z - sz);
+          glTexCoord2d (0, 1);
+          glVertex3d (x, y - sz, z + sz);
+          glTexCoord2d (1, 1);
+          glVertex3d (x, y + sz, z + sz);
+          glTexCoord2d (1, 0);
+          glVertex3d (x, y + sz, z - sz);
+        }
     }
 
   for (int i = 0; i < size; i++)
     {
       int j = (init + i) % size;
 
+      double x = tail[j].x;
+      double y = tail[j].y;
+      double z = tail[j].z;
+      double sz = thickness;
+
       bind_bulb ();
       glColor4d (1, 1, 1, head.a * i / size);
-      glVertex3d (tail[j].x, tail[j].y, tail[j].z);
+
+      if (graphics_get_mode () != 2)
+        glVertex3d (x, y, z);
+      else
+        {
+          glTexCoord2d (0, 0);
+          glVertex3d (x, y - sz, z - sz);
+          glTexCoord2d (0, 1);
+          glVertex3d (x, y - sz, z + sz);
+          glTexCoord2d (1, 1);
+          glVertex3d (x, y + sz, z + sz);
+          glTexCoord2d (1, 0);
+          glVertex3d (x, y + sz, z - sz);
+        }
     }
 
-  glDisable (GL_POINT_SPRITE);
+  if (graphics_get_mode () != 2)
+    glDisable (GL_POINT_SPRITE);
+
   glEnd ();
 }
 

@@ -317,7 +317,7 @@ void scene::render(int mode) const {
     t.update (0.1);
 
     if (mode == 2)
-      t.thickness = 8;
+      t.thickness = 16;
     else
       t.thickness = 256;
 

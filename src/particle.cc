@@ -12,6 +12,7 @@
 
 #include "sdl.hh"
 #include "texture.hh"
+#include "graphics.h"
 
 static texture *glow;
 static texture *bulb;
@@ -29,24 +30,50 @@ particle::render (bool ready) const
 {
   if (!ready)
     {
-      glPointParameterf (GL_POINT_SIZE_MIN, size);
-      glPointParameterf (GL_POINT_SIZE_MAX, size);
+      if (graphics_get_mode () != 2)
+        {
+          glPointParameterf (GL_POINT_SIZE_MIN, size);
+          glPointParameterf (GL_POINT_SIZE_MAX, size);
 
-      glBegin (GL_POINTS);
-      glEnable (GL_POINT_SPRITE);
+          glEnable (GL_POINT_SMOOTH);
+          glEnable (GL_POINT_SPRITE);
+
+          glBegin (GL_POINTS);
+        }
+      else
+        glBegin (GL_QUADS);
     }
 
-  bind_glow ();
   glColor4d (r, g, b, a);
-  glVertex3d (x, y, z);
+  bind_glow ();
+  glTexCoord2d (0, 0);
+  glVertex3d (x, y - size, z - size);
+  glTexCoord2d (0, 1);
+  glVertex3d (x, y - size, z + size);
+  glTexCoord2d (1, 1);
+  glVertex3d (x, y + size, z + size);
+  glTexCoord2d (1, 0);
+  glVertex3d (x, y + size, z - size);
 
-  bind_bulb ();
   glColor4d (1, 1, 1, a);
-  glVertex3d (x, y, z);
+  bind_bulb ();
+  glTexCoord2d (0, 0);
+  glVertex3d (x, y - size, z - size);
+  glTexCoord2d (0, 1);
+  glVertex3d (x, y - size, z + size);
+  glTexCoord2d (1, 1);
+  glVertex3d (x, y + size, z + size);
+  glTexCoord2d (1, 0);
+  glVertex3d (x, y + size, z - size);
 
   if (!ready)
     {
-      glDisable (GL_POINT_SPRITE);
+      if (graphics_get_mode () != 2)
+        {
+          glDisable (GL_POINT_SMOOTH);
+          glDisable (GL_POINT_SPRITE);
+        }
+
       glEnd ();
     }
 }
