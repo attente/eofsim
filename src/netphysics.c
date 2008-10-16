@@ -102,9 +102,3 @@ physics_get_time (void)
 {
   return state.time;
 }
-
-double
-physics_get_time_bonus (void)
-{
-  return 1.;
-}
