@@ -214,5 +214,5 @@ physics_get_time (void)
 double
 physics_get_time_bonus (void)
 {
-  return 1.;
+  return time_bonus;
 }
