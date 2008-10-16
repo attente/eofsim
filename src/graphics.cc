@@ -229,7 +229,7 @@ void graphics_render() {
 
     sim->render(mode);
 
-    if (mode != 2)
+    if (true)//mode != 2)
       {
         glCallList(list);
 
@@ -263,11 +263,15 @@ void graphics_render() {
         glEnd();
       }
 
-    graphics_print("Current Score:", 100, 30, 2, 0, 0);
+    graphics_print("Score:", 100, 30, 2, 0, 0);
 
     sprintf(buffer, "%.1lf", physics_get_score());
     graphics_print(buffer, 700, 30, 2, 1, 0);
     graphics_print(physics_get_message(), 400, 500, 2, 0.5, 1);
+
+    graphics_print ("Time:", 100, 500, 2, 0, 1);
+    sprintf (buffer, "%.1lf s", physics_get_time ());
+    graphics_print (buffer, 700, 500, 2, 1, 1);
 
     SDL_GL_SwapBuffers();
 }
