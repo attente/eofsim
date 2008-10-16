@@ -25,6 +25,7 @@ struct net_state
   int serial;
   double time;
   double score;
+  double time_bonus;
 };
 
 typedef struct sockaddr_in net_addr;
