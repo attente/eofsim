@@ -242,22 +242,20 @@ void scene::render(int mode) const {
         glPushMatrix ();
         glLoadIdentity ();
 
-/*
         glBindTexture (GL_TEXTURE_2D, backdrop);
         glBegin (GL_TRIANGLE_STRIP);
-        glColor4d (1, 1, 1, 1);
-        glTexCoord2d (0, 0);
-        glVertex2d (-8000, -6000);
+        glColor4d (0, 0, 0, 1);
         glTexCoord2d (0, 1);
+        glVertex2d (-8000, -6000);
+        glTexCoord2d (0, 0);
         glVertex2d (-8000,  6000);
-        glTexCoord2d (1, 0);
-        glVertex2d ( 8000, -6000);
         glTexCoord2d (1, 1);
+        glVertex2d ( 8000, -6000);
+        glTexCoord2d (1, 0);
         glVertex2d ( 8000,  6000);
         glEnd ();
 
         glPopMatrix ();
-*/
 
         GLfloat params[] = { -1.0, 5.0, -2.0, 0.0 };
         glLightfv(GL_LIGHT0, GL_POSITION, params);
