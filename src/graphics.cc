@@ -145,52 +145,35 @@ int graphics_initialise() {
     glVertex2d(45, 500);
     glEnd();
 
-    glBegin(GL_TRIANGLE_STRIP);
-    glColor4d(1, 0, 0, 0.60);
-    glVertex2d(100, 30);
-    glVertex2d(100, 35);
-    glColor4d(1, 0.5, 0, 0.60);
-    glVertex2d(203, 30);
-    glVertex2d(203, 35);
-    glColor4d(0.5, 0.25, 0, 0.60);
-    glVertex2d(397, 30);
-    glVertex2d(397, 35);
-    glColor4d(1, 1, 1, 0.60);
-    glVertex2d(398, 30);
-    glVertex2d(398, 35);
-    glVertex2d(402, 30);
-    glVertex2d(402, 35);
-    glColor4d(0, 0, 0, 0.60);
-    glVertex2d(403, 30);
-    glVertex2d(403, 35);
-    glVertex2d(597, 30);
-    glVertex2d(597, 35);
-    glColor4d(1, 1, 1, 0.60);
-    glVertex2d(598, 30);
-    glVertex2d(598, 35);
-    glVertex2d(602, 30);
-    glVertex2d(602, 35);
-    glColor4d(0, 0, 0, 0.60);
-    glVertex2d(603, 30);
-    glVertex2d(603, 35);
-    glVertex2d(700, 30);
-    glVertex2d(700, 35);
+    glBegin (GL_TRIANGLE_STRIP);
+    glColor4d (0, 0, 0, 0.60);
+    glVertex2d (100, 30);
+    glVertex2d (100, 35);
+
+    for (int i = 0; i < 8; i++)
+      {
+        double x = 200 + 400.0 * i / 7;
+
+        glVertex2d (x - 3, 30);
+        glVertex2d (x - 3, 35);
+        glColor4d (1, 1, 1, 0.60);
+        glVertex2d (x - 2, 30);
+        glVertex2d (x - 2, 35);
+        glVertex2d (x + 2, 30);
+        glVertex2d (x + 2, 35);
+        glColor4d (0, 0, 0, 0.60);
+        glVertex2d (x + 3, 30);
+        glVertex2d (x + 3, 35);
+      }
+
+    glVertex2d (700, 30);
+    glVertex2d (700, 35);
     glEnd();
 
     glBegin(GL_TRIANGLE_STRIP);
     glColor4d(0, 0, 0, 0.60);
     glVertex2d(765, 100);
     glVertex2d(770, 100);
-    glVertex2d(765, 197);
-    glVertex2d(770, 197);
-    glColor4d(1, 1, 1, 0.60);
-    glVertex2d(765, 198);
-    glVertex2d(770, 198);
-    glVertex2d(765, 202);
-    glVertex2d(770, 202);
-    glColor4d(0, 0, 0, 0.60);
-    glVertex2d(765, 203);
-    glVertex2d(770, 203);
     glVertex2d(765, 497);
     glVertex2d(770, 497);
     glColor4d(1, 1, 1, 0.60);
@@ -224,7 +207,10 @@ void graphics_destroy() {
     SDL_Quit();
 }
 
-void graphics_render (double alpha) {
+void
+graphics_render (double white,
+                 double sepia)
+{
     char buffer[80];
 
     sim->render(mode);
@@ -248,19 +234,42 @@ void graphics_render (double alpha) {
 
         double x, y;
         physics_get_location(&x, &y);
+        x = 600 - (x - 1000.0) / 7000 * 400;
 
-        x = 600 - x / 25;
-        glColor4d(0, 0, 0, 0.60);
-        glVertex2d(x - 5, 20);
-        glVertex2d(x, 30);
-        glVertex2d(x + 5, 20);
+        if (x >= 100 && x <= 700)
+          {
+            glColor4d(0, 0, 0, 0.60);
+            glVertex2d(x - 5, 20);
+            glVertex2d(x, 30);
+            glVertex2d(x + 5, 20);
+          }
 
-        y = 500 - 3 * y / 10;
+        y = 500 - y * 400.0 / 1500;
         glColor4d(0, 0, 0, 0.60);
         glVertex2d(780, y - 5);
         glVertex2d(770, y);
         glVertex2d(780, y + 5);
         glEnd();
+
+        y = physics_get_next_ring ();
+        y = 500 - y * 400.0 / 1500;
+        glBegin (GL_TRIANGLE_STRIP);
+        glColor4d (1, 1, 1, 0.60);
+        glVertex2d (765, y - 32);
+        glVertex2d (770, y - 32);
+        glVertex2d (765, y - 3);
+        glVertex2d (770, y - 3);
+        glColor4d (1, 1, 1, 1);
+        glVertex2d (765, y - 2);
+        glVertex2d (770, y - 2);
+        glVertex2d (765, y + 2);
+        glVertex2d (770, y + 2);
+        glColor4d (1, 1, 1, 0.60);
+        glVertex2d (765, y + 3);
+        glVertex2d (770, y + 3);
+        glVertex2d (765, y + 32);
+        glVertex2d (770, y + 32);
+        glEnd ();
       }
     else
       {
@@ -298,8 +307,17 @@ void graphics_render (double alpha) {
         glLoadIdentity ();
 
         glBindTexture (GL_TEXTURE_2D, 0);
+
         glBegin (GL_TRIANGLE_STRIP);
-        glColor4d (0.75, 0.6, 0.3, alpha);
+        glColor4d (0.75, 0.6, 0.3, sepia);
+        glVertex2d (-1, -1);
+        glVertex2d (-1,  1);
+        glVertex2d ( 1, -1);
+        glVertex2d ( 1,  1);
+        glEnd ();
+
+        glBegin (GL_TRIANGLE_STRIP);
+        glColor4d (1, 1, 1, white);
         glVertex2d (-1, -1);
         glVertex2d (-1,  1);
         glVertex2d ( 1, -1);
@@ -344,7 +362,7 @@ void graphics_print(const char *s, double x, double y,
 
 void graphics_fade ()
 {
-  const int STEPS = 300;
+  const int STEPS = 25;
 
   for (int i = 0; i < STEPS; i++)
     {
@@ -362,9 +380,11 @@ void graphics_fade ()
             return;
         }
 
-      graphics_render (0.75 * i / STEPS);
+      graphics_render (double (STEPS - i - 1) / STEPS, 0.75);
 
       if (i == STEPS - 1)
         i--;
+
+      SDL_Delay (40);
     }
 }

@@ -50,6 +50,7 @@ const double *physics_get_rings_vert (void);
 int physics_get_serial (void);
 double physics_get_time (void);
 double physics_get_time_bonus (void);
+double physics_get_next_ring (void);
 
 #ifdef __cplusplus
 }

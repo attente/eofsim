@@ -18,7 +18,7 @@ int main(int argc, char **argv) {
     if (error) return error;
     const int delay(40);
 
-    graphics_mode (2);
+    graphics_mode (0);
 
     physics_initialise (10000, 1000, -250, 0, 1);
     physics_set_thrust(0);
@@ -68,7 +68,7 @@ int main(int argc, char **argv) {
         int wait(static_cast< int >(clock.delta()));
         if (wait < delay) SDL_Delay(delay - wait);
 
-        graphics_render (0);
+        graphics_render (0, 0);
         if (physics_update ())
           {
             graphics_fade ();

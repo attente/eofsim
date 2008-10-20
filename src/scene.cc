@@ -226,10 +226,10 @@ void scene::render(int mode) const {
 
         glMatrixMode (GL_PROJECTION);
         glLoadIdentity ();
-        glOrtho (-8000, 8000, -6000, 6000, -10000, 10000);
+        glOrtho (-6000, 6000, -4500, 4500, -10000, 10000);
 
-        view.x.x = 1000;
-        view.x.y = 2000;
+        view.x.x = 6000;
+        view.x.y = 1500;
         view.x.z = 5000;
         view.y.x = -1;
         view.y.y = 0;
@@ -246,13 +246,13 @@ void scene::render(int mode) const {
         glBegin (GL_TRIANGLE_STRIP);
         glColor4d (0, 0, 0, 1);
         glTexCoord2d (0, 1);
-        glVertex2d (-8000, -6000);
+        glVertex2d (-6000, -4500);
         glTexCoord2d (0, 0);
-        glVertex2d (-8000,  6000);
+        glVertex2d (-6000,  4500);
         glTexCoord2d (1, 1);
-        glVertex2d ( 8000, -6000);
+        glVertex2d ( 6000, -4500);
         glTexCoord2d (1, 0);
-        glVertex2d ( 8000,  6000);
+        glVertex2d ( 6000,  4500);
         glEnd ();
 
         glPopMatrix ();
@@ -332,6 +332,10 @@ void scene::render(int mode) const {
         for (int i = 0; i < physics_get_n_rings (); i++)
           rings[i].set_position (physics_get_rings_horiz ()[i],
                                  physics_get_rings_vert ()[i]);
+
+        double x, y;
+        physics_get_location (&x, &y);
+        t.set_position (0, y, x);
       }
 
     for (int i = physics_get_n_rings () - 1; i >= 0; i--)

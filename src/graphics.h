@@ -17,7 +17,8 @@ extern "C" {
 
 int graphics_initialise(void);
 void graphics_destroy(void);
-void graphics_render(double alpha);
+void graphics_render (double white,
+                      double sepia);
 void graphics_mode(int m);
 
 int graphics_get_mode (void);

@@ -108,3 +108,9 @@ physics_get_time_bonus (void)
 {
   return state.time_bonus;
 }
+
+double
+physics_get_next_ring (void)
+{
+  return 0.;
+}

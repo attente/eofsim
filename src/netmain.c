@@ -41,7 +41,7 @@ main (void)
                          event.key.keysym.sym == SDLK_ESCAPE)))
       return 0;
 
-    graphics_render (0);
+    graphics_render (0, 0);
   }
 
   return 0;

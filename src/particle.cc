@@ -83,7 +83,7 @@ particle_init ()
 {
   GLfloat coeffs[] = { 1, 0, 0 };
 
-  glTexEnvi (GL_POINT_SPRITE, GL_COORD_REPLACE, GL_TRUE);
+  // glTexEnvi (GL_POINT_SPRITE, GL_COORD_REPLACE, GL_TRUE);
 
   glPointParameterf (GL_POINT_FADE_THRESHOLD_SIZE, 1);
   glPointParameterfv (GL_POINT_DISTANCE_ATTENUATION, coeffs);

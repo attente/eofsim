@@ -113,8 +113,6 @@ trail::render () const
   else
     glBegin (GL_QUADS);
 
-  head.render (true);
-
   for (int i = 0; i < size; i++)
     {
       int j = (init + i) % size;

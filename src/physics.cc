@@ -23,6 +23,8 @@ static double start_time;
 static int serial;
 static double time_bonus;
 static double time_locked;
+static const char *phys_message;
+static double message_expire;
 
 double now (void)
 {
@@ -32,6 +34,8 @@ double now (void)
 
   return tv.tv_sec + tv.tv_usec / 1000000.;
 }
+
+#include <time.h>
 
 void physics_initialise(double  x,
                         double  y,
@@ -48,10 +52,20 @@ void physics_initialise(double  x,
 
   srand (random_seed);
   for (i = 0; i < 8; i++)
-    rings_horiz[i] = 9000 - 1000 * i,
+    rings_horiz[i] = 8000 - 1000 * i,
     rings_vert[i] = rand() % 401 + 800;
+
+  if (random_seed == 1)
+    {
+      rings_vert[5] = 1000;
+      rings_vert[6] = 300;
+      rings_vert[7] = 1200;
+    }
+  else
+    rings_vert[1] -= 500;
+
   start_time = now ();
-  serial = start_time * 10;
+  serial = time(NULL);
   time_locked = 0;
   time_bonus = 0;
 
@@ -108,6 +122,12 @@ physics_update()
   if (on_ring == 8)
     return true;
 
+  if (now() - start_time >= 60. || obj->position().y < 0.1)
+    {
+      time_locked = now() - start_time;
+      return true;
+    }
+
   status = obj->update();
 
   if (obj->position().z < rings_horiz[on_ring])
@@ -130,7 +150,8 @@ physics_update()
       else
         sprintf (message, "%.1fm = no points", delta);
 
-      obj->set_message (message, 100);
+      phys_message = message;
+      message_expire = now() + 2.;
       on_ring++;
 
       if (on_ring == 8)
@@ -157,13 +178,10 @@ physics_get_score (void)
 const char *
 physics_get_message (void)
 {
-  return obj->message;
-}
+  if (now() > message_expire)
+    return NULL;
 
-void
-physics_set_message (const char *message)
-{
-  obj->set_message (message, 100);
+  return phys_message;
 }
 
 void
@@ -215,4 +233,13 @@ double
 physics_get_time_bonus (void)
 {
   return time_bonus;
+}
+
+double
+physics_get_next_ring (void)
+{
+  if (on_ring == 8)
+    return 0.;
+
+  return rings_vert[on_ring];
 }

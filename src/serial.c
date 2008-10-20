@@ -71,8 +71,10 @@ serial_packet (char pkt[3])
   physics_set_thrust (pkt[0] - 'm');
   physics_set_flaps (pkt[1] - 'm');
 
+/*
   if (pkt[2] != 'm')
     physics_landing_gear ();
+*/
 
   physics_update ();
 }
@@ -99,6 +101,16 @@ serial_read (int fd)
     }
     else
       serial_shift (buffer, &length, 1);
+
+  return true;
+}
+
+bool
+serial_discard (int fd)
+{
+  char c;
+
+  read (fd, &c, sizeof c);
 
   return true;
 }

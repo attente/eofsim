@@ -41,15 +41,12 @@ publish_the_physics (int       serial,
 static void
 reset_the_physics (bool regenerate)
 {
-  static double start = 10000;
+  static int seed = 1;
 
   if (randomised && regenerate)
-  {
-    srand (time (NULL));
-    start = 7000 + (rand () % 7001);
-  }
+    seed = time (NULL);
 
-  physics_initialise (start, 1000, -200, 0, 1);
+  physics_initialise (10000., 1000., -200., 0., seed);
   physics_set_thrust (0);
   physics_set_flaps (0);
 }
@@ -80,6 +77,7 @@ main (int argc, char **argv)
   int net;
 
   graphics_initialise ();
+  graphics_mode (0);
 
   serial = serial_open ();
   net = net_open ();
@@ -104,7 +102,7 @@ main (int argc, char **argv)
   printf ("randomised: %d\n", randomised);
 
   while (serial_ready (serial))
-    serial_read (serial);
+    serial_discard (serial);
   net_addr_set (&remote, "10.0.0.2");
 
   while (true)
@@ -113,9 +111,8 @@ main (int argc, char **argv)
 
     /* wait for user */
     reset_the_physics (true);
-    physics_set_message ("READY");
     publish_the_physics (serial, net, &remote);
-    graphics_render (0);
+    graphics_render (0, 0);
 
     while (!serial_ready (serial))
       check_sdl ();
@@ -129,7 +126,7 @@ main (int argc, char **argv)
       ended = physics_update ();
       publish_the_physics (serial, net, &remote);
       check_sdl ();
-      graphics_render (0);
+      graphics_render (0, 0);
     }
 
     while (check_sdl () != ' ')

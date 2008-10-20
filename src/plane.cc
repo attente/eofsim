@@ -99,6 +99,7 @@ bool plane::update() {
       message = NULL;
     }
 
+/*
     bool grounded;
 
     grounded = pos.y <= 0;
@@ -145,6 +146,7 @@ bool plane::update() {
 
     if (pos.z >= 5000)
       score -= fabs (pos.y - 1000) * 0.1;
+*/
 
     return false;
 }
@@ -162,7 +164,7 @@ plane::set_message (const char *msg, int prio)
     return;
 
   message = msg;
-  message_expiry = clock.time() + 5000;
+  message_expiry = clock.time() + 2000;
   message_prio = prio;
 }
 
